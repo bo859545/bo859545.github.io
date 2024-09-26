@@ -18,7 +18,7 @@
 			align-items:center;
 			margin-left: auto;
 			margin-right: auto;
-			width: 80%;
+			width: 70%;
 		}
 
 		.code {
@@ -32,6 +32,16 @@
 			margin-top: 40px;
 			padding-left: 80px;
 			font-size: 16x;
+		}
+
+		.comment {
+			color: #01a049;
+		}
+
+		.graph-header {	
+			display: block;
+			text-align: center;
+
 		}
 
 		</style>
@@ -76,13 +86,31 @@
 									<!-- Content -->
 										<h2 style="color: black; text-align: center;" id="content">Python Programming</h2>
 										<img class="image" src="images/Python/newplot.png" alt="" />
-										<p class="code" style="background-color: gray;">Template <br>
-											Template</p>
-										<img class="image" src="images/Python/newplot(2).png" alt="" />
-										<img class="image" src="images/Python/newplot(3).png" alt="" />
+										<p class="code" style="background-color: #e8e9eb; color: #545454; padding-top: 5px; padding-bottom: 8px;">
+											<span class="comment"># get libraries</span> <br>
+												import plotly.express as px <br>
+												import pandas as pd <br>
+												import numpy as np <br>
+												import plotly.graph_objects as go <br>
+												from plotly.subplots import make_subplots</p>
+										
+										<p class="code" style="background-color: #e8e9eb; color: #545454; padding-top: 5px; padding-bottom: 8px;">
+											<span class="comment"># get data</span> <br>
+												df = pd.read_csv('/content/NPSurvey.csv', <br>
+												parse_dates=['Survey date'])
+										</p>
+
+										<h3 class="graph-header" style="color: black;">Net Promoter Score Frequency</h3>
+										<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(2).png" alt="" />
+										<h3 class="graph-header" style="color: black;">Net Promoter Score | Market</h3>
+										<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(3).png" alt="" />
+										<h3 class="graph-header" style="color: black;">Monthly Score Region X</h3>
 										<img class="image" src="images/Python/newplot(4).png" alt="" />
+										<h3 class="graph-header" style="color: black;">Monthly Score Region W</h3>
 										<img class="image" src="images/Python/newplot(5).png" alt="" />
+										<h3 class="graph-header" style="color: black;">Monthly Score Region Z</h3>
 										<img class="image" src="images/Python/newplot(6).png" alt="" />
+										<h3 class="graph-header" style="color: black;">Weekly Score</h3>
 										<img class="image" src="./images/Python/newplot(7).png" alt="" />
 										<!-- <pre><code><p>Building Dashboards & Reports</p></code></pre>
 										<pre><code><p>Building Dashboards & Reports</p></code></pre> -->
