@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>bo859545</title>
+		<title>BO859545</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -21,12 +21,20 @@
 			display: block;
 			margin-left: auto;
 			margin-right: auto;
-			width: 80%;
+			width: 75%;
 			background-color: #f2f2f2;
 			color: black;
 			border-radius: 4px;
 			margin-top: 40px;
+			padding-left: 80px;
+			box-shadow: 2px 2px 4px rgba(160, 160, 160, 0.5);
 		}
+
+		.comment {
+			color: #01a049;
+			font-weight:600;
+		}
+
 		</style>
 	</head>
 	<body class="is-preload">
@@ -70,14 +78,22 @@
 									</header>
 
 									<!-- Content -->
-										<h2 style="color: #f2f2f2; text-align:center;" id="content">Building Data Pipelines</h2>
-										<h2 style="color: black; text-align:center;" id="content">Apache Airflow</h2>
+										<!-- <h2 style="color: #949494; text-align:center;" id="content">Building Data Pipelines</h2>
+										<h2 style="color: #949494; text-align:center;" id="content">Apache Airflow</h2> -->
+										<p class="code" style="background-color: #f3f3f3; color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+											<span class="comment"># Setting up Apache Airflow</span> <br>
+												$ python3 -m venv airflow-env <br>
+												$ source airflow-env/bin/activate <br>
+												$ export AIRFLOW_HOME=~/airflow <br>
+												$ pip install apache-airflow <br>
+												$ airflow db init <br>
+												$ airflow webserver -p 8080 <br>
+												$ airflow sheduler <br> 
+										</p>
 										<img class="image" src="images/III.png" alt="" />
 										<img class="image" src="images/II.png" alt="" />
-										<pre class="code"><code><p style="color: blueviolet;">Building Dashboards & Reports
-											Template
-										</p></code></pre>
 										<img class="image"src="images/IV.png" alt="" />
+										
 										<img class="image"src="images/V.png" alt="" />
 										<img class="image"  src="images/VI.png" alt="" />
 										<img class="image" src="images/VII.png" alt="" />
