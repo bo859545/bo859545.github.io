@@ -26,11 +26,12 @@
 			margin-left: auto;
 			margin-right: auto;
 			width: 70%;
-			background-color: #f2f2f2;
+			background-color: #f3f3f3;
 			color: white;
 			border-radius: 4px;
 			margin-top: 40px;
 			padding-left: 80px;
+			box-shadow: 2px 2px 4px rgba(160, 160, 160, 0.5);
 		}
 
 		.comment {
@@ -62,12 +63,12 @@
 					<nav id="menu">
 						<ul class="links">
 							<li><a href="index.html">Home</a></li>
-							<li><a href="landing.html">Engineering</a></li>
-							<li><a href="generic.html">Reporting</a></li>
-							<li><a href="elements.html">Programming</a></li>
-							<li><a href="elements.html">Visualization</a></li>
-							<li><a href="elements.html">Machine Learning</a></li>
-							<li><a href="elements.html">Big Data</a></li>
+							<li><a href="engineering.html">Engineering</a></li>
+							<li><a href="reporting.html">Reporting</a></li>
+							<li><a href="python.html">Programming</a></li>
+							<li><a href="visualization.html">Visualization</a></li>
+							<li><a href="ml.html">Machine Learning</a></li>
+							<li><a href="big-data.html">Big Data</a></li>
 						</ul>
 						<!-- <ul class="actions stacked">
 							<li><a href="#" class="button primary fit">Get Started</a></li>
@@ -87,8 +88,17 @@
 
 									<!-- Content -->
 										<h2 style="color: black; text-align: center;" id="content">Python Programming</h2>
-										<a href="images/Python/newplot.png" target="_blank"><img class="image" src="images/Python/newplot.png" alt="" /></a>
-										<p class="code" style="background-color: #e8e9eb; color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+
+										<div class="description" style="display:block; width: 70%; align-items: center; margin-left: auto; margin-right: auto;">
+											<h3 style="color: #545454; text-align: center;">How likely is it that you would recommend [Organization X] to a friend or colleague?
+											</h3>
+											<p style="color: #949494; text-align: center;">The NPS assumes a subdivision of respondents into "promoters" who provide ratings of 9 or 10, "passives" who provide ratings of 7 or 8, and "detractors" who provide ratings of 6 or lower. The net promoter score results from a calculation that involves subtracting the percentage of detractors from the percentage of promoters collected by the survey item.</p>
+										</div>
+										
+											<a href="images/Python/newplot.png" target="_blank">
+												<img class="image" src="images/Python/newplot.png" alt="" />
+											</a>
+										<p class="code" style="color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
 											<span class="comment"># get libraries</span> <br>
 												import plotly.express as px <br>
 												import pandas as pd <br>
@@ -96,24 +106,42 @@
 												import plotly.graph_objects as go <br>
 												from plotly.subplots import make_subplots</p>
 										
-										<p class="code" style="background-color: #e8e9eb; color: #545454; padding-top: 5px; padding-bottom: 8px;font-size: 17px;">
+										<p class="code" style="color: #545454; padding-top: 5px; padding-bottom: 8px;font-size: 17px;">
 											<span class="comment"># get data</span> <br>
 												df = pd.read_csv('/content/NPSurvey.csv', <br>
 												parse_dates=['Survey date'])
 										</p>
 
 										<h3 class="graph-header">Net Promoter Score Frequency</h3>
-										<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(2).png" alt="" />
+										<a href="images/Python/newplot(2).png" target="_blank">
+											<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(2).png" alt="" />
+										</a>
+										
 										<h3 class="graph-header">Net Promoter Score | Market</h3>
-										<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(3).png" alt="" />
+										<a href="images/Python/newplot(3).png" target="_blank">
+											<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(3).png" alt="" />
+										</a>
+										
 										<h3 class="graph-header">Monthly Score Region X</h3>
-										<img class="image" src="images/Python/newplot(4).png" alt="" />
+										<a href="images/Python/newplot(4).png" target="_blank">
+											<img class="image" src="images/Python/newplot(4).png" alt="" />
+										</a>
+										
 										<h3 class="graph-header">Monthly Score Region W</h3>
-										<img class="image" src="images/Python/newplot(5).png" alt="" />
+										<a href="images/Python/newplot(5).png" target="_blank">
+											<img class="image" src="images/Python/newplot(5).png" alt="" />
+										</a>
+										
 										<h3 class="graph-header">Monthly Score Region Z</h3>
-										<img class="image" src="images/Python/newplot(6).png" alt="" />
+										<a href="images/Python/newplot(6).png" target="_blank">
+											<img class="image" src="images/Python/newplot(6).png" alt="" />
+										</a>
+										
 										<h3 class="graph-header">Weekly Score</h3>
-										<img class="image" src="./images/Python/newplot(7).png" alt="" />
+										<a href="images/Python/newplot(7).png" target="_blank">
+											<img class="image" src="./images/Python/newplot(7).png" alt="" />
+										</a>
+										
 										<!-- <pre><code><p>Building Dashboards & Reports</p></code></pre>
 										<pre><code><p>Building Dashboards & Reports</p></code></pre> -->
 
