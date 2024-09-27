@@ -112,12 +112,65 @@
 												
 										</p>
 
-											#
+										<p class="code" style="background-color: #f3f3f3; color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+											<span class="comment"># DAG - Directed Acyclic Graph</span> <br>
+											args{<br>
+												”owner”:”gwayi”, <br>
+												"retries": 1, <br>
+												"retry_delay":timedelta(minutes=5) <br>
+												} <br>
+											
+											@dag( <br>
+												default_arguments = args <br>
+												Schedule=timedelta(minutes=30), <br>
+												start_date=datetime(2024, 7, 29), <br>
+												catchup=False, <br>
+												tags=['DataOps Team'] <br>
+											) <br>
+										</p>
 
+										<p class="code" style="background-color: #f3f3f3; color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+											<span class="comment"># elt</span> <br>
+											@task() <br>
+											def get_tables(): <br>
+											"""extract list of tables in public schema""" <br>
 
+											try: <br>
+												cursor.execute( <br>
+													f"""SELECT table_name <br>
+													FROM information_schema.tables <br>
+													WHERE table_schema = 'public'""" <br>
+												) <br>
 
-										<img class="image"  src="images/VI.png" alt="" />
-										<img class="image" src="images/VII.png" alt="" />
+											tbls = [x[0] for x in cursor.fetchall()] <br>
+            
+										</p>
+
+										<p class="code" style="background-color: #f3f3f3; color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+											<span class="comment"># elt</span> <br>
+											@task() <br>
+											def extract|load_bigquery(tbls, conn): <br>
+											"""loop through tbls then extract & load""" <br>
+
+												client = bigquery.Client() <br>
+												job_config = bigquery.LoadJobConfig( <br>
+												write_disposition="WRITE_TRUNCATE") <br>
+
+												for tbl in tbls: <br>
+												table_id = f"adventureworks-431609.stg.{tbl}" <br>
+												sql = f"SELECT * FROM {tbl} WHERE <br>
+												updated_at >= {ds}'" <br>
+												df = pd.read_sql(sql, conn) <br>
+
+												job = client.load_table_from_dataframe( <br>
+												df, table_id, job_config=job_config) <br>
+												job.result() <br>
+
+												get_tables = get_tables() <br>
+												extract_load = extract_load(get_tables) <br>
+            
+										</p>
+
 										<img class="image" src="images/XII.png" alt="" />
 										<!-- <pre class="code">
 											<code>
