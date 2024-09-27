@@ -90,11 +90,32 @@
 												$ airflow webserver -p 8080 <br>
 												$ airflow sheduler <br> 
 										</p>
-										<img class="image" src="images/III.png" alt="" />
-										<img class="image" src="images/II.png" alt="" />
-										<img class="image"src="images/IV.png" alt="" />
+										<!-- <img class="image" src="images/III.png" alt="" />
+										<img class="image" src="images/II.png" alt="" /> -->
+										<img class="image"src="images/IV.png" alt=""/>
+										<img class="image"src="images/ingestion.png"/>
+
+										<p class="code" style="background-color: #f3f3f3; color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+											<span class="comment"># Install Dependencies</span> <br>
+												pip install google-cloud-bigquery <br>
+												pip install --upgrade snowflake-connector-python <br>
+										</p>
+
 										
-										<img class="image"src="images/V.png" alt="" />
+										<p class="code" style="background-color: #f3f3f3; color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+											<span class="comment"># importing libraries</span> <br>
+											from airflow.decorators import dag, task <br>
+											from datetime import datetime, timedelta <br>
+											from google.cloud import bigquery <br>
+											import pandas as pd <br>
+											import psycopg2 <br>
+												
+										</p>
+
+											#
+
+
+
 										<img class="image"  src="images/VI.png" alt="" />
 										<img class="image" src="images/VII.png" alt="" />
 										<img class="image" src="images/XII.png" alt="" />
