@@ -36,6 +36,10 @@ pre {
 }
 
 
-a:hover {
+.tertiary-nav .unique:hover {
+    color: black;
+}
+
+.unique:hover {
     color: black;
 }
