@@ -1,0 +1,29 @@
+.code-comment {
+    color: #0aca0a;
+    font-size: 18px;
+}
+
+.py-method {
+    color:#ca10ca;
+}
+
+pre {
+    font: 100px;
+}
+
+.py-code {
+    display: flex;
+    background-color: #fafafa;
+    color: #545454;
+    font-size: 14px;
+    width: 70%;
+    margin: 30px auto;
+}
+
+.image {
+    display: block;
+    align-items:center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
