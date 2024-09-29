@@ -27,3 +27,15 @@ pre {
     margin-right: auto;
     width: 70%;
 }
+
+.tertiary-nav {
+    list-style: none;
+    display: flex;
+    column-gap: 10px;
+    color: #949494;
+}
+
+
+a:hover {
+    color: black;
+}
