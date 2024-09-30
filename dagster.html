@@ -67,37 +67,40 @@
 										 
 										<nav id="sub-menu">
 											<ul class="tertiary-nav">
-												<li><a href="#">Airflow</a></li>
-												<li><a href="#">Kafka</a></li>
-												<li><a href="#">AWS Glue</a></li>
-												<li><a href="#">Data Factory</a></li>
+												<li><a href="/engineering.html">Airflow</a></li>
+												<li><a href="/dagster.html">Dagster</a></li>
+												<li><a href="/template.html">AWS Glue</a></li>
+												<li><a href="/template.html">Azure Data Factory</a></li>
 											</ul>
 										</nav>
 
 										
-										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Building Data Pipeline</h2>
-										<a href="images/team_asset_graph.webp" target="_blank"><img class="image" src="images/team_asset_graph.webp"/></a>
-										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Setting up Dagster</h3>
+										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Building Data Pipelines</h2>
+										<!-- <a href="images/team_asset_graph.webp" target="_blank"><img class="image" src="images/team_asset_graph.webp"/></a> -->
+										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Dagster Set Up</h3>
 									</header>
 
 									<!-- Content -->
 											
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># Apache Airflow set-up</span>
-		$ python3 -m venv airflow-env
-		$ source airflow-env/bin/activate
-		$ export AIRFLOW_HOME=~/airflow
-		$ pip install apache-airflow
-		$ airflow db init
-		$ airflow webserver -p 8080
+		<span class="code-comment"># set-up Dagster Environment</span>
+		$ python3 -m venv dag-env
+		$ source dag-env/bin/activate
+		$ pip install dagster dagit
+		$ dagster project scaffold --name projectI
+		$ cd projectI
 		$ airflow sheduler
+		$ dagit
+		$ dagster-daemon run
 											</code>
 										</pre>
 										
-									<a href="images/ingestion.png" target="_blank"><img class="image"src="images/ingestion.png"/></a>
+									<a href="images/daster.png" target="_blank"><img class="image" src="images/daster.png"/></a>
 
-										<pre class="py-code">
+									<h1 style="color: #949494; text-align: center;">Web Development <br> for project in progress</h1>
+
+										<!-- <pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># Install Dependencies</span>
 		pip install google-cloud-bigquery
@@ -186,12 +189,14 @@
 
 									<a href="images/VIII.png" target="_blank"><img class="image" src="images/VIII.png" alt="" /></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
-									<a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a>
+									<a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a> -->
 									
 										
 										
 
 					</div>
+
+					
 
 				<!-- Contact -->
 					<!-- <section id="contact">

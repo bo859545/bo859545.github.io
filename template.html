@@ -29,8 +29,9 @@
 		}
 
 		</style>
-		
 	</head>
+
+
 	<body class="is-preload">
 
 		<!-- Wrapper -->
@@ -70,131 +71,23 @@
 												<li><a href="/engineering.html">Airflow</a></li>
 												<li><a href="/dagster.html">Dagster</a></li>
 												<li><a href="/template.html">AWS Glue</a></li>
-												<li><a href="/template.html">Azure Data Factory</a></li>
+												<li><a href="/template.html">Data Factory</a></li>
 											</ul>
 										</nav>
 	
-										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Building Data Pipeline</h2>
-										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Setting up Apache Airflow</h3>
+										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Web Development</h2>
+										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Work in Progess...</h3>
 										
 									</header>
 
-									<p style="color: black; width: 70%; margin: 50px auto; text-align: justify; font-size: 20px;">This project showcases the implementation of a modern data stack and the construction of a robust data pipeline for a fictional bike retail company, Adventure Works. It leverages a combination of Apache Airflow, Python, BigQuery, dbt, and other tools from the data ecosystem to efficiently move data from PostgreSQL to BigQuery. This end-to-end solution demonstrates best practices in data engineering and modern data management.
-									</p>
+									<!-- <p style="color: black; width: 70%; margin: 50px auto; text-align: justify; font-size: 20px;">This project showcases the implementation of a modern data stack and the construction of a robust data pipeline for a fictional bike retail company, Adventure Works. It leverages a combination of Apache Airflow, Python, BigQuery, dbt, and other tools from the data ecosystem to efficiently move data from PostgreSQL to BigQuery. This end-to-end solution demonstrates best practices in data engineering and modern data management.
+									</p> -->
+								</div>
+					</div>
 
 									<!-- Content -->
 											
-										<pre class="py-code">
-											<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># Apache Airflow set-up</span>
-		$ python3 -m venv airflow-env
-		$ source airflow-env/bin/activate
-		$ export AIRFLOW_HOME=~/airflow
-		$ pip install apache-airflow
-		$ airflow db init
-		$ airflow webserver -p 8080
-		$ airflow sheduler
-											</code>
-										</pre>
-
-									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
-									<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
-									<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
-									<!-- <a href="images/ingestion.png" target="_blank"><img class="image" src="images/ingestion.png"/></a> -->
-									
-
-										<pre class="py-code">
-											<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># Install Dependencies</span>
-		pip install google-cloud-bigquery
-		pip install --upgrade snowflake-connector-python
-											</code>
-										</pre>
-
-										<pre class="py-code">
-											<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># importing libraries</span>
-		<span class="py-method">from</span> airflow.decorators <span class="py-method">from</span> dag, task
-		<span class="py-method">from</span> datetime <span class="py-method">from</span> datetime, timedelta
-		<span class="py-method">from</span> google.cloud import bigquery
-		import pandas as pd
-		import psycopg2
-											</code>
-										</pre>
-
-								
-
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># importing libraries</span>
-		args{
-			<span class="code-text">”owner”</span> : <span class="code-text">”gwayi”</span> ,
-			<span class="code-text">"retries"</span>: 1,
-			<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
-			}
-
-		<span class="airflow-call">@dag</span>(
-			default_arguments = args
-			Schedule=timedelta(minutes=30),
-			start_date=datetime(2024, 7, 29),
-			catchup= <span class="code-func">False</span>,
-			tags=[<span class="code-text">'DataOps Team'</span>]
-			)
-										</code>
-									</pre>
-
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="code-comment">get tables</span>
-		<span class="airflow-call">@task()</span>
-		<span class="code-func">def</span> get_tables <span class="code-func">()</span>:
-		<span class="code-text">"""extract list of tables in public schema"""</span>
-		
-		<span class="py-method">try</span>:
-			cursor.execute(
-				f <span class="code-text">"""SELECT table_name 
-				FROM information_schema.tables 
-				WHERE table_schema = 'public'"""</span> 
-			)
-		
-		tbls = [x[0] for x in cursor.fetchall()]
-				
-										</code>
-									</pre>
-
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># extract_load</span>
-		<span class="airflow-call">@task()</span>
-		<span class="code-func">def</span> extract_load(tbls, conn):
-		<span class="code-text">"""loop through tbls then extract & load"""</span>
-
-			client = bigquery.Client()
-			job_config = bigquery.LoadJobConfig(
-			write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
-
-			<span class="py-method">for</span> tbl in tbls:
-			table_id = f"adventureworks-431609.stg.{tbl}"
-			sql = f"<span class="code-text">SELECT * FROM {tbl} WHERE 
-				updated_at >= {ds}'"</span>
-			df = pd.read_sql(sql, conn)
-
-			job = client.load_table_from_dataframe(
-			df, table_id, job_config=job_config)
-			job.result()
-
-			get_tables = get_tables()
-			extract_load = extract_load(get_tables)
-				
-										</code>
-									</pre>
-
-									<a href="images/VIII.png" target="_blank"><img class="image" src="images/VIII.png" alt="" /></a>
-									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
-									<a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a>
-								
-					</div>
-
+										
 				<!-- Contact -->
 					<!-- <section id="contact">
 						<div class="inner">
