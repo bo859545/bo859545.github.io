@@ -73,14 +73,12 @@
 												<li><a href="#">Data Factory</a></li>
 											</ul>
 										</nav>
-	
-										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Building Data Pipeline</h2>
-										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Setting up Apache Airflow</h3>
-										
-									</header>
 
-									<p style="color: black; width: 70%; margin: 50px auto; text-align: justify; font-size: 20px;">This project showcases the implementation of a modern data stack and the construction of a robust data pipeline for a fictional bike retail company, Adventure Works. It leverages a combination of Apache Airflow, Python, BigQuery, dbt, and other tools from the data ecosystem to efficiently move data from PostgreSQL to BigQuery. This end-to-end solution demonstrates best practices in data engineering and modern data management.
-									</p>
+										
+										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Building Data Pipeline</h2>
+										<a href="images/team_asset_graph.webp" target="_blank"><img class="image" src="images/team_asset_graph.webp"/></a>
+										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Setting up Dagster</h3>
+									</header>
 
 									<!-- Content -->
 											
@@ -96,12 +94,8 @@
 		$ airflow sheduler
 											</code>
 										</pre>
-
-									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
-									<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
-									<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
-									<!-- <a href="images/ingestion.png" target="_blank"><img class="image" src="images/ingestion.png"/></a> -->
-									
+										
+									<a href="images/ingestion.png" target="_blank"><img class="image"src="images/ingestion.png"/></a>
 
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
@@ -122,69 +116,70 @@
 											</code>
 										</pre>
 
-								
+								<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
+								<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># importing libraries</span>
-		args{
-			”owner”:”gwayi”,
-			"retries": 1,
-			"retry_delay":timedelta(minutes=5)
-			}
+	<span class="code-comment"># importing libraries</span>
+	args{
+		”owner”:”gwayi”,
+		"retries": 1,
+		"retry_delay":timedelta(minutes=5)
+		}
 
-		@dag(
-			default_arguments = args
-			Schedule=timedelta(minutes=30),
-			start_date=datetime(2024, 7, 29),
-			catchup=False,
-			tags=['DataOps Team']
-			)
+	@dag(
+		default_arguments = args
+		Schedule=timedelta(minutes=30),
+		start_date=datetime(2024, 7, 29),
+		catchup=False,
+		tags=['DataOps Team']
+		)
 										</code>
 									</pre>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># importing libraries</span>
-		a@task()
-		def get_tables():
-		"""extract list of tables in public schema"""
-		
-		try:
-			cursor.execute(
-				f"""SELECT table_name 
-				FROM information_schema.tables 
-				WHERE table_schema = 'public'"""
-			)
-		
-		tbls = [x[0] for x in cursor.fetchall()]
+	<span class="code-comment"># importing libraries</span>
+	a@task()
+	def get_tables():
+	"""extract list of tables in public schema"""
+	
+	  try:
+		cursor.execute(
+			 f"""SELECT table_name 
+			 FROM information_schema.tables 
+			 WHERE table_schema = 'public'"""
+		 )
+	
+	  tbls = [x[0] for x in cursor.fetchall()]
 				
 										</code>
 									</pre>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># importing libraries</span>
-		@task()
-		def extract|load_bigquery(tbls, conn):
-		"""loop through tbls then extract & load"""
+	<span class="code-comment"># importing libraries</span>
+	@task()
+	def extract|load_bigquery(tbls, conn):
+	"""loop through tbls then extract & load"""
 
-			client = bigquery.Client()
-			job_config = bigquery.LoadJobConfig(
-			write_disposition="WRITE_TRUNCATE")
+		client = bigquery.Client()
+		job_config = bigquery.LoadJobConfig(
+		write_disposition="WRITE_TRUNCATE")
 
-			for tbl in tbls:
-			table_id = f"adventureworks-431609.stg.{tbl}"
-			sql = f"SELECT * FROM {tbl} WHERE 
-			updated_at >= {ds}'"
-			df = pd.read_sql(sql, conn)
+		for tbl in tbls:
+		table_id = f"adventureworks-431609.stg.{tbl}"
+		sql = f"SELECT * FROM {tbl} WHERE 
+		updated_at >= {ds}'"
+		df = pd.read_sql(sql, conn)
 
-			job = client.load_table_from_dataframe(
-			df, table_id, job_config=job_config)
-			job.result()
+		job = client.load_table_from_dataframe(
+		df, table_id, job_config=job_config)
+		job.result()
 
-			get_tables = get_tables()
-			extract_load = extract_load(get_tables)
+		get_tables = get_tables()
+		extract_load = extract_load(get_tables)
 				
 										</code>
 									</pre>

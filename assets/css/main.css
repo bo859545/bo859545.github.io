@@ -155,7 +155,8 @@ input, select, textarea {
 
 		a:hover {
 			border-bottom-color: transparent;
-			color: #9bf1ff !important;
+			color: #9bf1ff;
+			/* removed color: #9bf1ff !important; */
 		}
 
 		a:active {

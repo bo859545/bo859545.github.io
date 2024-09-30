@@ -1,6 +1,6 @@
 .code-comment {
     color: #0aca0a;
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .py-method {
@@ -31,15 +31,16 @@ pre {
 .tertiary-nav {
     list-style: none;
     display: flex;
-    column-gap: 10px;
+    column-gap: 20px;
     color: #949494;
+    text-decoration: none;
 }
 
-
-.tertiary-nav .unique:hover {
-    color: black;
+.tertiary-nav li {
+    padding: 0;
 }
 
-.unique:hover {
-    color: black;
+.tertiary-nav a:hover {
+    color: #242943;
 }
+
