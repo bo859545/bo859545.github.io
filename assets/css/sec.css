@@ -15,9 +15,10 @@ pre {
     display: flex;
     background-color: #fafafa;
     color: #545454;
-    font-size: 14px;
+    font-size: 16px;
     width: 70%;
     margin: 30px auto;
+    line-height: none;
 }
 
 .image {
@@ -44,3 +45,13 @@ pre {
     color: #242943;
 }
 
+.code-text {
+    color: rgb(231, 55, 55);
+}
+.code-func {
+    color: #077ae6;
+}
+
+.airflow-call {
+    color: #c7934e;
+}
