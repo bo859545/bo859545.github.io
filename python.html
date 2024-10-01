@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/sec.css">
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
 		<style>
@@ -82,7 +83,14 @@
 						<!-- One -->
 							<section id="one" style="background-color: white;">
 								<div class="inner">
-									<header class="major">
+									<header class="major" style="margin: 0 auto;">
+
+										<nav id="sub-menu"></nav>
+											<ul class="tertiary-nav">
+												<li><a href="engineering.html">Python</a></li>
+												<li><a href="dagster.html">R</a></li>
+											</ul>
+										</nav>
 										<!-- <h1 style="color: black;">Elements</h1> -->
 									</header>
 
@@ -90,15 +98,62 @@
 										<h2 style="color: black; text-align: center;" id="content">Python Programming</h2>
 
 										<div class="description" style="display:block; width: 70%; align-items: center; margin-left: auto; margin-right: auto;">
-											<h3 style="color: #545454; text-align: center;">How likely is it that you would recommend [Organization X] to a friend or colleague?
+											<h3 style="color: #545454; text-align: center;">How likely is it that you would recommend an <br>[Organization X]?
 											</h3>
-											<p style="color: #949494; text-align: center;">The NPS assumes a subdivision of respondents into "promoters" who provide ratings of 9 or 10, "passives" who provide ratings of 7 or 8, and "detractors" who provide ratings of 6 or lower. The net promoter score results from a calculation that involves subtracting the percentage of detractors from the percentage of promoters collected by the survey item.</p>
+											df = pd.read_csv('/content/NPSurvey.csv',
+											parse_dates=['Survey date'])					<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">The NPS-Net Promoter Score assumes a subdivision of respondents into "promoters" who provide ratings of 9 or 10, "passives" who provide ratings of 7 or 8, and "detractors" who provide ratings of 6 or lower. The net promoter score results from a calculation that involves subtracting the percentage of detractors from the percentage of promoters collected by the survey item.
+												
 										</div>
 										
 											<a href="images/Python/newplot.png" target="_blank">
 												<img class="image" src="images/Python/newplot.png" alt="" />
 											</a>
-										<p class="code" style="color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
+
+										<!-- Content -->
+											
+											<pre class="py-code">
+												<code style="margin: 0; padding: 0; color: #545454;">
+			<span class="code-comment"># get libraries</span>
+			<span class="py-method">import</span> plotly.express as px
+			<span class="py-method">import</span> pandas as pd
+			<span class="py-method">import</span> numpy as np
+			<span class="py-method">import</span> plotly.graph_objects as go
+			<span class="py-method">from</span> plotly.subplots <span class="py-method">import</span> make_subplots
+												</code>
+											</pre>
+
+											<pre class="py-code">
+												<code style="margin: 0; padding: 0; color: #545454;">
+			<span class="code-comment"># get data</span>
+			df = pd.read_csv('/content/NPSurvey.csv',
+				parse_dates=['Survey date'])
+												</code>
+											</pre>
+
+											<!-- <pre class="py-code">
+												<code style="margin: 0; padding: 0; color: #545454;">
+			<span class="code-comment"># get libraries</span>
+			import plotly.express as px
+			import pandas as pd
+			import numpy as np
+			import plotly.graph_objects as go
+			from plotly.subplots import make_subplots
+												</code>
+											</pre>
+
+											<pre class="py-code">
+												<code style="margin: 0; padding: 0; color: #545454;">
+			<span class="code-comment"># get libraries</span>
+			import plotly.express as px
+			import pandas as pd
+			import numpy as np
+			import plotly.graph_objects as go
+			from plotly.subplots import make_subplots
+												</code>
+											</pre> -->
+
+
+										<!-- <p class="code" style="color: #545454; padding-top: 5px; padding-bottom: 8px; font-size: 17px ;">
 											<span class="comment"># get libraries</span> <br>
 												import plotly.express as px <br>
 												import pandas as pd <br>
@@ -110,51 +165,79 @@
 											<span class="comment"># get data</span> <br>
 												df = pd.read_csv('/content/NPSurvey.csv', <br>
 												parse_dates=['Survey date'])
-										</p>
+										</p> -->
 
-										<h3 class="graph-header">Net Promoter Score Frequency</h3>
+										<h4 class="graph-header">Net Promoter Score Frequency</h4>
+										<pre class="py-code">
+											<code style="margin: 0; padding: 0; color: #545454;">
+		<span class="code-comment"># get data</span>
+		df = pd.read_csv('/content/NPSurvey.csv',
+			parse_dates=['Survey date'])
+											</code>
+										</pre>
 										<a href="images/Python/newplot(2).png" target="_blank">
 											<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(2).png" alt="" />
 										</a>
 										
-										<h3 class="graph-header">Net Promoter Score | Market</h3>
+										<h4 class="graph-header">NPS | Region</h4>
+										<pre class="py-code">
+											<code style="margin: 0; padding: 0; color: #545454;">
+		<span class="code-comment"># get data</span>
+		df = pd.read_csv('/content/NPSurvey.csv',
+			parse_dates=['Survey date'])
+											</code>
+										</pre>
 										<a href="images/Python/newplot(3).png" target="_blank">
-											<img class="image" style="width: 40%; height: auto;" src="images/Python/newplot(3).png" alt="" />
+											<img class="image" style="width: 40%; height: auto; font-weight: 300;" src="images/Python/newplot(3).png" alt="" />
 										</a>
 										
-										<h3 class="graph-header">Monthly Score Region X</h3>
+										<h4 class="graph-header">Monthly Score Region X</h4>
+										<pre class="py-code">
+											<code style="margin: 0; padding: 0; color: #545454;">
+		<span class="code-comment"># get data</span>
+		df = pd.read_csv('/content/NPSurvey.csv',
+			parse_dates=['Survey date'])
+											</code>
+										</pre>
 										<a href="images/Python/newplot(4).png" target="_blank">
 											<img class="image" src="images/Python/newplot(4).png" alt="" />
 										</a>
 										
-										<h3 class="graph-header">Monthly Score Region W</h3>
+										<h4 class="graph-header">Monthly Score Region W</h4>
+										<pre class="py-code">
+											<code style="margin: 0; padding: 0; color: #545454;">
+		<span class="code-comment"># get data</span>
+		df = pd.read_csv('/content/NPSurvey.csv',
+			parse_dates=['Survey date'])
+											</code>
+										</pre>
 										<a href="images/Python/newplot(5).png" target="_blank">
 											<img class="image" src="images/Python/newplot(5).png" alt="" />
 										</a>
 										
-										<h3 class="graph-header">Monthly Score Region Z</h3>
+										<h4 class="graph-header">Monthly Score Region Z</h4>
+										<pre class="py-code">
+											<code style="margin: 0; padding: 0; color: #545454;">
+		<span class="code-comment"># get data</span>
+		df = pd.read_csv('/content/NPSurvey.csv',
+			parse_dates=['Survey date'])
+											</code>
+										</pre>
 										<a href="images/Python/newplot(6).png" target="_blank">
 											<img class="image" src="images/Python/newplot(6).png" alt="" />
 										</a>
 										
-										<h3 class="graph-header">Weekly Score</h3>
+										<h4 class="graph-header">Weekly Score</h4>
+										<pre class="py-code">
+											<code style="margin: 0; padding: 0; color: #545454;">
+		<span class="code-comment"># get data</span>
+		df = pd.read_csv('/content/NPSurvey.csv',
+			parse_dates=['Survey date'])
+											</code>
+										</pre>
 										<a href="images/Python/newplot(7).png" target="_blank">
 											<img class="image" src="./images/Python/newplot(7).png" alt="" />
 										</a>
-										
-										<!-- <pre><code><p>Building Dashboards & Reports</p></code></pre>
-										<pre><code><p>Building Dashboards & Reports</p></code></pre> -->
-
-										
-
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
-}
-
-print 'It took ' + i + ' iterations to sort the deck.';
-</code></pre>
 
 											</div>
 										</div>
