@@ -176,7 +176,7 @@
 										<h4 class="graph-header">Net Promoter Score Frequency</h4>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0; color: #545454;">
-		<span class="code-comment"># get data</span>
+		<span class="code-comment">#@title</span>
 				#@title
 		names = ['Promoter','Detractor','Passive']
 		fig = px.pie(values=[2309,1719,972],
@@ -197,7 +197,7 @@
 										<h4 class="graph-header">NPS | Region</h4>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0; color: #545454;">
-		<span class="code-comment"># get data</span>
+		<span class="code-comment">#@title</span>
 		#@title
 		fig = px.bar(dfmarket, x = 'market',
 					y = 'nps_score',
@@ -218,7 +218,7 @@
 										<h4 class="graph-header">Monthly Score Region X</h4>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0; color: #545454;">
-		<span class="code-comment"># get data</span>
+		<span class="code-comment">#@title</span>
 				#@title
 		fig = px.line(dfmex, x='month', y='nps_score',template = 'plotly_white', title = 'NPS for Mexico over time')
 		fig.update_layout(showlegend = False)
@@ -234,7 +234,7 @@
 										<h4 class="graph-header">Monthly Score Region W</h4>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0; color: #545454;">
-		<span class="code-comment"># get data</span>
+		<span class="code-comment">#@title</span>
 				#@title
 		fig = px.line(dfuk,
 					x='month',
@@ -254,7 +254,7 @@
 										<h4 class="graph-header">Monthly Score Region Z</h4>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0; color: #545454;">
-		<span class="code-comment"># get data</span>
+		<span class="code-comment">#@title</span>
 				#@title
 		fig = px.line(dfus, x='month', y='nps_score',template = 'plotly_white', title = 'NPS for US over time')
 		fig.update_layout(showlegend = False)
@@ -270,7 +270,7 @@
 										<h4 class="graph-header">Weekly Score</h4>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0; color: #545454;">
-		<span class="code-comment"># get data</span>
+		<span class="code-comment">#@title</span>
 				#@title
 		fig = px.line(dfmex, x='weekday',
 					y='nps_score',
