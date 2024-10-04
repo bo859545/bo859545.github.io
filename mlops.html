@@ -66,26 +66,117 @@
 								<div class="inner">
 									<header class="major" style="margin: 0 auto;">
 										 
-										<nav id="sub-menu">
+										<!-- <nav id="sub-menu">
 											<ul class="tertiary-nav">
 												<li><a href="/engineering.html">Airflow</a></li>
 												<li><a href="/dagster.html">Dagster</a></li>
 												<li><a href="/template.html">AWS Glue</a></li>
 												<li><a href="/template.html">Data Factory</a></li>
 											</ul>
-										</nav>
+										</nav> -->
 	
-										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Web Development</h2>
-										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Work in Progess...</h3>
+										<!-- <h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Web Development</h2>
+										<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Work in Progess...</h3> -->
 										
 									</header>
 
 									<!-- <p style="color: black; width: 70%; margin: 50px auto; text-align: justify; font-size: 20px;">This project showcases the implementation of a modern data stack and the construction of a robust data pipeline for a fictional bike retail company, Adventure Works. It leverages a combination of Apache Airflow, Python, BigQuery, dbt, and other tools from the data ecosystem to efficiently move data from PostgreSQL to BigQuery. This end-to-end solution demonstrates best practices in data engineering and modern data management.
 									</p> -->
 								</div>
+
+								<!-- Content -->
+								 <div style="width: 100%; margin: 0 auto;">
+									<h3 style="color: #545454; text-align: center;">Data Ingestion</h3>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0; color: #545454;">
+		<span class="code-comment">#@importing libraries</span>
+		<span class="py-method">import</span> os
+		<span class="py-method">import</span> zipfile
+		<span class="py-method">from</span> abc <span class="py-method">import</span> ABC, abstractmethod
+		<span class="py-method">import</span> pandas <span class="py-method">as</span> pd
+
+
+		<span class="code-comment">#abstract class</span>
+		<span class="code-func">class</span> getData(ABC):
+			@abstractmethod
+			<span class="code-func">def</span> ingest(self, file_path: str) -> pd.DataFrame:
+				<span class="code-text">"""Abstract method to ingest data from a given file."""</span>
+				pass
+
+		<span class="code-comment"># ZIP Ingestion Class</span>
+		<span class="code-func">class</span> getZip(getData):
+			<span class="code-func">def</span> ingest(self, file_path: str) -> pd.DataFrame:
+			
+				<span class="code-text">"""Extract.zip file & return pandas DataFrame."""</span> 
+				<span class="code-comment"># Ensure the file is a .zip</span> 
+				<span class="py-method">if</span> <span class="code-func">not</span> file_path.endswith(".zip"):
+					<span class="py-method">raise</span> <span class="code-func">ValueError</span> (<span class="code-text">"The provided file is not a .zip file."</span>)
+		
+				<span class="code-comment"># Extract the zip file</span>
+				with zipfile.ZipFile(file_path, "r") as zip:
+					zip.extractall(<span class="code-text">"extracted_files"</span>)
+		
+				<span class="code-comment"># Find the extracted CSV file (assuming there is one CSV file inside the zip)</span>
+				extracted_files = os.listdir("extracted_data")
+				csv_files = [file for files in extracted_files if file.endswith(".csv")]
+		
+				if len(csv_files) == 0:
+					raise FileNotFoundError(<span class="code-text">"No CSV file found."</span>)
+				if len(csv_files) > 1:
+					raise ValueError(<span class="code-text">"Multiple CSV files found. Please specify which one to use."</span>)
+		
+				<span class="code-comment"> # Read the CSV into a DataFrame</span>
+				csv_file_path = os.path.join(<span class="code-text">"extracted_files"</span>, csv_files[0])
+				df = pd.read_csv(csv_file_path)
+		
+				<span class="code-comment"># Return the DataFrame</span>
+				<span class="py-method">return</span> df
+
+				<span class="code-comment"># class selection</span>
+	
+				class selectIngestor:
+					@staticmethod
+					<span class="code-func">def</span> get_data_ingestor(file_extension: str) -> DataIngestor:
+						<span class="code-text">"""Selects appropriate Ingestor based on file extension."""</span>
+						<span class="py-method">if</span> file_extension == ".zip":
+							<span class="py-method">return</span> getZip()
+						<span class="py-method">else</span>:
+							<span class="py-method">raise</span> <span class="code-func">ValueError</span> (
+								f <span class="code-text">"No ingestor available for file extension: {file_extension}"</span>)
+	
+										</code>
+									</pre>
+	
+
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0; color: #545454;">
+	
+		<span class="py-metod">import</span> pandas as pd
+		<span class="py-method">from</span> extras.get_data <span class="py-method">import</span> selectIngestor
+		<span class="py-method">from</span> zenml <span class="py-method">import</span> step
+
+		@step
+		<span class="code-func">def</span> data_ingestion_step(file_path: str) -> pd.DataFrame:
+		<span class="code-text">"""Ingest data from a ZIP file."""</span>
+		<span class="code-text"># Determine the file extension</span>
+		file_extension = ".zip"
+
+		<span class="code-text"># Get the appropriate DataIngestor</span>
+		data_ingestor = DataIngestorFactory.get_data_ingestor(file_extension)
+
+		<span class="code-text"># Ingest the data and load it into a DataFrame</span>
+		df = data_ingestor.ingest(file_path)
+		<span class="py-method">return</span> df
+											</code>
+									</pre>
+									<h2>work In Progress</h2>
+								 </div>
+								
 					</div>
 
-									<!-- Content -->
+									
+
+									
 											
 										
 				<!-- Contact -->

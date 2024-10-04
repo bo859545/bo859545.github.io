@@ -78,7 +78,7 @@
 		$ pip install apache-airflow
 		$ airflow db init
 		$ airflow webserver -p 8080 <span class="code-comment">#launch webserver</span>
-		$ airflow sheduler <span class="code-comment">#scheduler</span>
+		$ airflow sheduler <span class="code-comment">#launch scheduler</span>
 												</code>
 											</pre>
 
@@ -89,7 +89,7 @@
 
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># install dependencies</span>
+		<span class="code-comment"># installing dependencies</span>
 		pip install google-cloud-bigquery
 		pip install --upgrade snowflake-connector-python
 											</code>
@@ -98,11 +98,11 @@
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># importing libraries</span>
-		<span class="py-method">from</span> airflow.decorators <span class="py-method">from</span> dag, task
-		<span class="py-method">from</span> datetime <span class="py-method">from</span> datetime, timedelta
-		<span class="py-method">from</span> google.cloud import bigquery
-		import pandas as pd
-		import psycopg2
+		<span class="py-method">from</span> airflow.decorators <span class="py-method">import</span> dag, task
+		<span class="py-method">from</span> datetime <span class="py-method">import</span> datetime, timedelta
+		<span class="py-method">from</span> google.cloud <span class="py-method">import</span> bigquery
+		<span class="py-method">import</span> pandas <span class="py-method">as</span> pd
+		<span class="py-method">import</span> psycopg2
 											</code>
 										</pre>
 
@@ -110,9 +110,9 @@
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># initialize a dag - Direct Acyclic Graph</span>
+		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
 		args{
-			<span class="code-text">”owner”</span> : <span class="code-text">”gwayi”</span> ,
+			<span class="code-text">”owner”</span> : <span class="code-text">BO859545</span> ,
 			<span class="code-text">"retries"</span>: 1,
 			<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
 			}
@@ -151,14 +151,16 @@
 		<span class="code-comment"># Task Two - extract_load</span>
 		<span class="airflow-call">@task()</span>
 		<span class="code-func">def</span> extract_load(tbls, conn):
-		<span class="code-text">"""loop through tbls then extract & load"""</span>
+		<span class="code-text">"""this task loops through tbls returned from previous task,
+		extract all columns from each tbl where the column updated
+		at >= {ds}, last execution date then loads the data"""</span>
 
 			client = bigquery.Client()
 			job_config = bigquery.LoadJobConfig(
 			write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
 
 			<span class="py-method">for</span> tbl in tbls:
-			table_id = f"adventureworks-431609.stg.{tbl}"
+			table_id = f<span class="code-text">"adventureworks-431609.stg.</span>{tbl}<span class="code-text">"</span>
 			sql = f"<span class="code-text">SELECT * FROM {tbl} WHERE 
 				updated_at >= {ds}'"</span>
 			df = pd.read_sql(sql, conn)
