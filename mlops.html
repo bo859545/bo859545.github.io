@@ -94,31 +94,28 @@
 		<span class="py-method">import</span> zipfile
 		<span class="py-method">from</span> abc <span class="py-method">import</span> ABC, abstractmethod
 		<span class="py-method">import</span> pandas <span class="py-method">as</span> pd
-
-
-		<span class="code-comment">#abstract class</span>
+		<!-- <span class="code-comment">#abstract class</span>
 		<span class="code-func">class</span> getData(ABC):
 			@abstractmethod
 			<span class="code-func">def</span> ingest(self, file_path: str) -> pd.DataFrame:
 				<span class="code-text">"""Abstract method to ingest data from a given file."""</span>
-				pass
-
-		<span class="code-comment"># ZIP Ingestion Class</span>
+				pass -->
+		<span class="code-comment">#@ZIP Class</span>
 		<span class="code-func">class</span> getZip(getData):
 			<span class="code-func">def</span> ingest(self, file_path: str) -> pd.DataFrame:
 			
-				<span class="code-text">"""Extract.zip file & return pandas DataFrame."""</span> 
-				<span class="code-comment"># Ensure the file is a .zip</span> 
+				<span class="code-text">"""Extract .zip file & return pandas DataFrame."""</span> 
+				<span class="code-comment">#@check if file is a .zip</span> 
 				<span class="py-method">if</span> <span class="code-func">not</span> file_path.endswith(".zip"):
-					<span class="py-method">raise</span> <span class="code-func">ValueError</span> (<span class="code-text">"The provided file is not a .zip file."</span>)
+					<span class="py-method">raise</span> <span class="code-func">ValueError</span> (<span class="code-text">"File not a .zip."</span>)
 		
-				<span class="code-comment"># Extract the zip file</span>
-				with zipfile.ZipFile(file_path, "r") as zip:
-					zip.extractall(<span class="code-text">"extracted_files"</span>)
+				<span class="code-comment">#@If file is .zip extract</span>
+				<span class="py-method">with</span> zipfile.ZipFile(file_path, "r") as zip:
+					zip.extractall(<span class="code-text">"files"</span>)
 		
 				<span class="code-comment"># Find the extracted CSV file (assuming there is one CSV file inside the zip)</span>
-				extracted_files = os.listdir("extracted_data")
-				csv_files = [file for files in extracted_files if file.endswith(".csv")]
+				files = os.listdir(<span class="code-text">"files"</span>)
+				csv_files = [file for files in files if file.endswith(".csv")]
 		
 				if len(csv_files) == 0:
 					raise FileNotFoundError(<span class="code-text">"No CSV file found."</span>)
@@ -126,7 +123,7 @@
 					raise ValueError(<span class="code-text">"Multiple CSV files found. Please specify which one to use."</span>)
 		
 				<span class="code-comment"> # Read the CSV into a DataFrame</span>
-				csv_file_path = os.path.join(<span class="code-text">"extracted_files"</span>, csv_files[0])
+				csv_file_path = os.path.join(<span class="code-text">"files"</span>, csv_files[0])
 				df = pd.read_csv(csv_file_path)
 		
 				<span class="code-comment"># Return the DataFrame</span>
@@ -134,11 +131,11 @@
 
 				<span class="code-comment"># class selection</span>
 	
-				class selectIngestor:
+				<span class="code-func">class</span> getData:
 					@staticmethod
-					<span class="code-func">def</span> get_data_ingestor(file_extension: str) -> DataIngestor:
+					<span class="code-func">def</span> Ingestor(file_extension: str) -> DataIngestor:
 						<span class="code-text">"""Selects appropriate Ingestor based on file extension."""</span>
-						<span class="py-method">if</span> file_extension == ".zip":
+						<span class="py-method">if</span> file_extension == <span class="code-text">".zip"</span>:
 							<span class="py-method">return</span> getZip()
 						<span class="py-method">else</span>:
 							<span class="py-method">raise</span> <span class="code-func">ValueError</span> (
@@ -151,25 +148,31 @@
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0; color: #545454;">
 	
-		<span class="py-metod">import</span> pandas as pd
-		<span class="py-method">from</span> extras.get_data <span class="py-method">import</span> selectIngestor
+		<span class="py-method">import</span> pandas as pd
+		<span class="py-method">from</span> extras.get_data <span class="py-method">import</span> getData
 		<span class="py-method">from</span> zenml <span class="py-method">import</span> step
 
-		@step
-		<span class="code-func">def</span> data_ingestion_step(file_path: str) -> pd.DataFrame:
-		<span class="code-text">"""Ingest data from a ZIP file."""</span>
+		@task
+		<span class="code-func">def</span> getData(file_path: str) -> pd.DataFrame:
+		<span class="code-text">"""get data from a ZIP file."""</span>
 		<span class="code-text"># Determine the file extension</span>
-		file_extension = ".zip"
+		file_extension = "os.path.splitext(file_path)[1]"
 
 		<span class="code-text"># Get the appropriate DataIngestor</span>
-		data_ingestor = DataIngestorFactory.get_data_ingestor(file_extension)
+		data_ingestor = getData.Ingestor(file_extension)
 
 		<span class="code-text"># Ingest the data and load it into a DataFrame</span>
 		df = data_ingestor.ingest(file_path)
 		<span class="py-method">return</span> df
+
 											</code>
 									</pre>
-									<h2>work In Progress</h2>
+
+									<h2 style="color: #545454; text-align: center;">Work In Progress</h2>
+									<h3 style="color: #545454; text-align: center;">Handling Missin Data </h3>
+									<h3 style="color: #545454; text-align: center;">Data Ingestion</h3>
+									<h3 style="color: #545454; text-align: center;">Data Ingestion</h3>
+									
 								 </div>
 								
 					</div>

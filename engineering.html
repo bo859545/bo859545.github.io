@@ -140,8 +140,12 @@
 				FROM information_schema.tables 
 				WHERE table_schema = 'public'"""</span> 
 			)
-		
-		tbls = [x[0] for x in cursor.fetchall()]
+
+		<span class="py-method">except (Exception) as</span> error:
+			print(<span class="code-text">"Error while getting tables"</span>)
+
+		<span class="py-method">finally</span>:
+			tbls = [x[0] for x in cursor.fetchall()]
 				
 										</code>
 									</pre>
