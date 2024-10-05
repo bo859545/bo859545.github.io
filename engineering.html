@@ -89,34 +89,25 @@
 									<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
 
 									
-									<h3 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Implementing elt/etl file structure</h3>
+									<h3 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Files Structure</h3>
 									<p class="paragraph">Implementing a elt/etl file structure ensures separation of concerns and makes it easier to scale your ETL project, debug issues, and onboard new team members.</p>
 									<!-- <a href="images/file-structure.png" target="_blank"><img class="image" src="images/file-structure.png" alt="" /></a> -->
 
 									<p class="paragraph">
-										config/ <br>
-										Configuration files, such as environment variables, database connections, and credentials. <br>
-										dags/ <br>
-										For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
-										extract/ <br>
-										Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
-										transform/ <br>
-										Transformation logic is applied here, e.g., data cleaning, formatting, normalization, or aggregation. <br>
-										load/ <br>
-										Loading scripts to push the transformed data into the final destination (data warehouse, databases). <br>
-										utils/ <br>
-										Utility scripts such as common functions for error handling, logging, or reusable snippets. <br>
-										logs/ <br>
-										Centralized directory for log files to monitor your ETL runs. <br>You may want to separate logs by date or pipeline. <br>
-										tests/ <br>
-										Unit and integration tests to ensure each component works as expected. <br>
-										data/ <br>
-										A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
-										docs/ <br>
-										Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
+										<span class="text-bold">config/</span> Configuration files, such as environment variables, database connections, and credentials. <br>
+										<span class="text-bold">dags/</span> For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
+										<span class="text-bold">extract/</span> Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
+										<spam class="text-bold">transform/</spam> Transformation logic is applied here, e.g., data cleaning, formatting, normalization, or aggregation. <br>
+										<span class="text-bold">load/</span> Loading scripts to push the transformed data into the final destination (data warehouse, databases). <br>
+										<span class="text-bold">utils/</span> Utility scripts such as common functions for error handling, logging, or reusable snippets. <br>
+										<span class="text-bold">logs/</span> Centralized directory for log files to monitor your ETL runs. You may want to separate logs by date or pipeline. <br>
+										<span class="text-bold">tests/</span> Unit and integration tests to ensure each component works as expected. <br>
+										<span class="text-bold">data/</span> A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
+										<span class="text-bold">docs/</span> Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
 										</p>
 
 									
+										<h3 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Extract | Load</h3>
 
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">

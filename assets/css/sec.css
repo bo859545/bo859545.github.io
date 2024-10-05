@@ -90,3 +90,7 @@ pre {
     margin: 0 auto;
     margin-top: 10px;
 }
+
+.text-bold {
+    font-weight: bold;
+}
