@@ -83,6 +83,14 @@
 												</code>
 											</pre>
 
+											<pre class="py-code">
+												<code style="margin: 0; padding: 0;">
+			<span class="code-comment"># installing dependencies</span>
+			pip install google-cloud-bigquery
+			pip install --upgrade snowflake-connector-python
+												</code>
+											</pre>
+
 									<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Airflow Weberver UI</h3>
 									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
 									<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
@@ -107,15 +115,9 @@
 										</p>
 
 									
-										<h3 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Extract | Load</h3>
+										<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Extract_Script</h4>
 
-										<pre class="py-code">
-											<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># installing dependencies</span>
-		pip install google-cloud-bigquery
-		pip install --upgrade snowflake-connector-python
-											</code>
-										</pre>
+										
 
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
@@ -172,6 +174,8 @@
 										</code>
 									</pre>
 
+									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Load_Script</h4>
+
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># Task Two - extract_load</span>
@@ -201,10 +205,10 @@
 										</code>
 									</pre>
 
-									<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Running Pipeline</h3>
+									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Running Pipeline</h4>
 									<a href="images/VIII.png" target="_blank"><img class="image" src="images/VIII.png" alt="" /></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
-									<h3 style="color: #949494; text-align:center; margin-top: 70px; margin-bottom: 0;" id="content">Running dbt Models</h3>
+									<h4 style="color: #949494; text-align:center; margin-top: 70px; margin-bottom: 0;" id="content">Running dbt Models</h4>
 									<a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a>
 								
 					</div>
