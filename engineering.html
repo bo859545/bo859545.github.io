@@ -88,6 +88,36 @@
 									<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
 									<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
 
+									
+									<h3 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Implementing elt/etl file structure</h3>
+									<p class="paragraph">Implementing a elt/etl file structure ensures separation of concerns and makes it easier to scale your ETL project, debug issues, and onboard new team members.</p>
+									<!-- <a href="images/file-structure.png" target="_blank"><img class="image" src="images/file-structure.png" alt="" /></a> -->
+
+									<p class="paragraph">
+										config/ <br>
+										Configuration files, such as environment variables, database connections, and credentials. <br>
+										dags/ <br>
+										For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
+										extract/ <br>
+										Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
+										transform/ <br>
+										Transformation logic is applied here, e.g., data cleaning, formatting, normalization, or aggregation. <br>
+										load/ <br>
+										Loading scripts to push the transformed data into the final destination (data warehouse, databases). <br>
+										utils/ <br>
+										Utility scripts such as common functions for error handling, logging, or reusable snippets. <br>
+										logs/ <br>
+										Centralized directory for log files to monitor your ETL runs. <br>You may want to separate logs by date or pipeline. <br>
+										tests/ <br>
+										Unit and integration tests to ensure each component works as expected. <br>
+										data/ <br>
+										A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
+										docs/ <br>
+										Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
+										</p>
+
+									
+
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># installing dependencies</span>

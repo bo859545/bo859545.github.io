@@ -82,3 +82,11 @@ pre {
 .highlight {
     color:#077ae6
 }
+
+.paragraph {
+    font-size: 19px;
+    color: #2e2e2e;
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 10px;
+}

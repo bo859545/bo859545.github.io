@@ -177,6 +177,62 @@
 								
 					</div>
 
+							<!-- file structure -->
+								 <div style="display: flex; justify-content: space-between; margin: 0 auto; width: 80%; column-gap: 40px;">
+									<div>
+										<img src="images/structure.png" alt="">
+									 </div>
+									 <div>
+										<p style="color: #545454;">
+											Directory and File Descriptions
+	
+											data_pipeline/ (Root Directory)
+												Purpose: Contains the entire project.
+										
+											data_pipeline/ (Python Package)
+												__init__.py: Makes the directory a Python package.
+												config.py: Manages configuration settings, often loading from external files like YAML or JSON.
+												main.py: The entry point for running the data pipeline. It orchestrates the extract, transform, and load (ETL) processes.
+										
+											extract/
+												Purpose: Contains modules related to data extraction from various sources.
+												extractor.py: Implements functions or classes to extract data from databases, APIs, files, etc.
+										
+											transform/
+												Purpose: Contains modules for data transformation and cleaning.
+												transformer.py: Implements data cleaning, normalization, aggregation, and other transformation logic.
+										
+											load/
+												Purpose: Contains modules responsible for loading data into target systems.
+												loader.py: Implements functions or classes to load data into databases, data warehouses, or other storage solutions.
+										
+											utils/
+												Purpose: Holds utility functions and helper modules used across the pipeline.
+												helpers.py: Common helper functions, such as logging setup, error handling, or data validation.
+										
+											tests/
+												Purpose: Contains unit and integration tests to ensure pipeline components work as expected.
+												test_extractor.py, test_transformer.py, test_loader.py: Test cases for respective modules.
+										
+											configs/
+												Purpose: Stores configuration files separate from the codebase.
+												config.yaml: YAML file containing configurable parameters like database credentials, API keys, file paths, etc.
+										
+											scripts/
+												Purpose: Contains scripts for automation, deployment, or running the pipeline.
+												run_pipeline.sh: Shell script to execute the pipeline, possibly setting environment variables or activating virtual environments.
+										
+											requirements.txt
+												Purpose: Lists all Python dependencies required for the project. Used with pip install -r requirements.txt.
+										
+											README.md
+												Purpose: Provides an overview of the project, setup instructions, usage examples, and other relevant documentation.
+										
+											setup.py
+												Purpose: Script for installing the project as a package. Defines dependencies and metadata.
+										</p>
+								 </div>
+
 									
 
 									
