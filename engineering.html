@@ -105,39 +105,31 @@
 									</p> 
 
 									<pre style="color: #545454; font-size: 16px;">
-						I. Where is our data?  Source
-						II. Where do we consolidate our data? Storage
-						III. How will we get it there? Ingestion
-						IV. How will we clean it up? Transformation
-						V. How will we analyze it? Reporting
+						I. Where is our data?  <span class="highlight">Source</span>
+						II. Where do we consolidate our data? <span class="highlight">Storage</span>
+						III. How will we get it there? <span class="highlight">Ingestion</span>
+						IV. How will we clean it up? <span class="highlight">Transformation</span>
+						V. How will we analyze it? <span class="highlight">Reporting</span>
 									</pre>
-
-									<!-- <ol style="background-color: #545454;">
-										<li>I. Where is our data?  Source </li>
-										<li>II. Where do we consolidate our data?  Storage</li>
-									</ol> -->
-
-									
 
 									<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
 									<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
 
 									
-									<h3 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Files Structure</h3>
-									<p class="paragraph">Implementing a elt/etl file structure ensures separation of concerns and makes it easier to scale your ETL project, debug issues, and onboard new team members.</p>
-									<!-- <a href="images/file-structure.png" target="_blank"><img class="image" src="images/file-structure.png" alt="" /></a> -->
+									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Project's File Structure</h4>
+									<p class="paragraph">Implementing the project's file structure ensures separation of concerns and makes it easier to scale your ETL/ELT projects, debug issues, and onboard new team members.</p>
 
 									<p class="paragraph">
-										<span class="text-bold">config/</span> Configuration files, such as environment variables, database connections, and credentials. <br>
-										<span class="text-bold">dags/</span> For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
-										<span class="text-bold">extract/</span> Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
-										<spam class="text-bold">transform/</spam> Transformation logic is applied here, e.g., data cleaning, formatting, normalization, or aggregation. <br>
-										<span class="text-bold">load/</span> Loading scripts to push the transformed data into the final destination (data warehouse, databases). <br>
-										<span class="text-bold">utils/</span> Utility scripts such as common functions for error handling, logging, or reusable snippets. <br>
-										<span class="text-bold">logs/</span> Centralized directory for log files to monitor your ETL runs. You may want to separate logs by date or pipeline. <br>
-										<span class="text-bold">tests/</span> Unit and integration tests to ensure each component works as expected. <br>
-										<span class="text-bold">data/</span> A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
-										<span class="text-bold">docs/</span> Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
+										<span class="text-bold">config/</span> - Configuration files, such as environment variables, database connections, and credentials. <br>
+										<span class="text-bold">dags/</span> - For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
+										<span class="text-bold">extract/</span> - Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
+										<spam class="text-bold">transform/</spam> - Transformation logic is applied here, e.g., data cleaning, formatting, normalization, or aggregation. <br>
+										<span class="text-bold">load/</span> - Loading scripts to push the transformed data into the final destination (data warehouse, databases). <br>
+										<span class="text-bold">utils/</span> - Utility scripts such as common functions for error handling, logging, or reusable snippets. <br>
+										<span class="text-bold">logs/</span> - Centralized directory for log files to monitor your ETL runs. You may want to separate logs by date or pipeline. <br>
+										<span class="text-bold">tests/</span> - Unit and integration tests to ensure each component works as expected. <br>
+										<span class="text-bold">data/</span> - A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
+										<span class="text-bold">docs/</span> - Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
 										</p>
 
 									
