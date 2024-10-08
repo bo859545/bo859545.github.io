@@ -80,7 +80,8 @@ pre {
 }
 
 .highlight {
-    color:#077ae6
+    color: #077ae6;
+    text-decoration: underline;
 }
 
 .paragraph {
