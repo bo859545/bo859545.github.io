@@ -274,10 +274,79 @@
 									</pre>
 
 									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Orchestrating Pipeline - Apache Airflow</h4>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
+		args{
+			<span class="code-text">”owner”</span> : <span class="code-text">BO859545</span> ,
+			<span class="code-text">"retries"</span>: 1,
+			<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
+			}
+
+		<span class="airflow-call">@dag</span>(
+			default_arguments = args
+			Schedule=timedelta(minutes=30),
+			start_date=datetime(2024, 7, 29),
+			catchup= <span class="code-func">False</span>,
+			tags=[<span class="code-text">'DataOps Team'</span>]
+			)
+										</code>
+									</pre>
+
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="airflow-call">@task()</span>
+		<span class="code-func">def</span> get_tables <span class="code-func">()</span>:
+		<span class="code-text">"""extract list of tables in public schema"""</span>
+		
+		<span class="py-method">try</span>:
+			cursor.execute(
+				f <span class="code-text">"""SELECT table_name 
+				FROM information_schema.tables 
+				WHERE table_schema = 'public'"""</span> 
+			)
+
+		<span class="py-method">except (Exception) as</span> error:
+			print(<span class="code-text">"Error while getting tables"</span>)
+
+		<span class="py-method">finally</span>:
+			tbls = [x[0] for x in cursor.fetchall()]
+				
+										</code>
+									</pre>
+
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="airflow-call">@task()</span>
+		<span class="code-func">def</span> extract_load(tbls, conn):
+		<span class="code-text">"""this task loops through tbls returned from previous task,
+		extract all columns from each tbl where the column updated
+		at >= {ds}, last execution date then loads the data"""</span>
+
+			client = bigquery.Client()
+			job_config = bigquery.LoadJobConfig(
+			write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
+
+			<span class="py-method">for</span> tbl in tbls:
+			table_id = f<span class="code-text">"adventureworks-431609.stg.</span>{tbl}<span class="code-text">"</span>
+			sql = f"<span class="code-text">SELECT * FROM {tbl} WHERE 
+				updated_at >= {ds}'"</span>
+			df = pd.read_sql(sql, conn)
+
+			job = client.load_table_from_dataframe(
+			df, table_id, job_config=job_config)
+			job.result()
+
+			get_tables = get_tables()
+			extract_load = extract_load(get_tables)
+				
+										</code>
+									</pre>
+
 									<a href="images/VIII.png" target="_blank"><img class="image" src="images/VIII.png" alt="" /></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
-									<h4 style="color: #949494; text-align:center; margin-top: 70px; margin-bottom: 0;" id="content">Running dbt Models</h4>
-									<a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a>
+									<!-- <h4 style="color: #949494; text-align:center; margin-top: 70px; margin-bottom: 0;" id="content">Running dbt Models</h4> -->
+									<!-- <a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a> -->
 								
 					</div>
 
