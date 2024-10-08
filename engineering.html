@@ -148,7 +148,7 @@
 			password: ${SOURCE_DB_PASSWORD}  # Referenced
 
 		target:
-		type: database
+		type: data warehouse
 		database:
 			engine: postgresql
 			host: localhost
@@ -160,26 +160,27 @@
 										</code>
 									</pre>
 
-										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">dags/</h5>
-										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/</h5>
-										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/</h5>
-										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/</h5>
-										<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Extract_Script</h4>
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">dags/</h5>
+									<p class="paragraph" style="text-align: center;">**Return back later once whole scripts is in place.**</p>
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/</h5>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
+		args{
+			<span class="code-text">”owner”</span> : <span class="code-text">BO859545</span> ,
+			<span class="code-text">"retries"</span>: 1,
+			<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
+			}
 
-										
-
-										<pre class="py-code">
-											<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># importing libraries</span>
-		<span class="py-method">from</span> airflow.decorators <span class="py-method">import</span> dag, task
-		<span class="py-method">from</span> datetime <span class="py-method">import</span> datetime, timedelta
-		<span class="py-method">from</span> google.cloud <span class="py-method">import</span> bigquery
-		<span class="py-method">import</span> pandas <span class="py-method">as</span> pd
-		<span class="py-method">import</span> psycopg2
-											</code>
-										</pre>
-
-								
+		<span class="airflow-call">@dag</span>(
+			default_arguments = args
+			Schedule=timedelta(minutes=30),
+			start_date=datetime(2024, 7, 29),
+			catchup= <span class="code-func">False</span>,
+			tags=[<span class="code-text">'DataOps Team'</span>]
+			)
+										</code>
+									</pre>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
@@ -223,7 +224,8 @@
 										</code>
 									</pre>
 
-									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Load_Script</h4>
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/</h5>
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
@@ -254,6 +256,9 @@
 										</code>
 									</pre>
 
+									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Extract_Script</h4>
+									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Load_Script</h4>
+
 									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Running Pipeline</h4>
 									<a href="images/VIII.png" target="_blank"><img class="image" src="images/VIII.png" alt="" /></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
@@ -261,77 +266,6 @@
 									<a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a>
 								
 					</div>
-
-				<!-- Contact -->
-					<!-- <section id="contact">
-						<div class="inner">
-							<section>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half">
-											<label for="name">Name</label>
-											<input type="text" name="name" id="name" />
-										</div>
-										<div class="field half">
-											<label for="email">Email</label>
-											<input type="text" name="email" id="email" />
-										</div>
-										<div class="field">
-											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="6"></textarea>
-										</div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send Message" class="primary" /></li>
-										<li><input type="reset" value="Clear" /></li>
-									</ul>
-								</form>
-							</section>
-							<section class="split">
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-envelope"></span>
-										<h3>Email</h3>
-										<a href="#">information@untitled.tld</a>
-									</div>
-								</section>
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-phone"></span>
-										<h3>Phone</h3>
-										<span>(000) 000-0000 x12387</span>
-									</div>
-								</section>
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-home"></span>
-										<h3>Address</h3>
-										<span>1234 Somewhere Road #5432<br />
-										Nashville, TN 00000<br />
-										United States of America</span>
-									</div>
-								</section>
-							</section>
-						</div>
-					</section> -->
-
-				<!-- Footer -->
-					<!-- <footer id="footer">
-						<div class="inner">
-							<ul class="icons">
-								<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
-								<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-								<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-								<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								<li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-							</ul>
-							<ul class="copyright">
-								<li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-							</ul>
-						</div>
-					</footer>
-
-			</div> -->
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
