@@ -132,7 +132,38 @@
 										<span class="text-bold">docs/</span> - Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
 										</p>
 
-									
+										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">config/</h5>
+
+										<pre class="py-code">
+											<code>
+		<spam class="code-comment"># config/config.yaml</spam>
+		source:
+		type: database
+		database:
+			engine: postgresql
+			host: localhost
+			port: 5432
+			name: adw_db
+			user: **
+			password: ${SOURCE_DB_PASSWORD}  # Referenced
+
+		target:
+		type: database
+		database:
+			engine: postgresql
+			host: localhost
+			port: 5432
+			name: target_db
+			user: target_user
+			password: ${TARGET_DB_PASSWORD}  # Referenced
+			table: "processed_users"
+										</code>
+									</pre>
+
+										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">dags/</h5>
+										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/</h5>
+										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/</h5>
+										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/</h5>
 										<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Extract_Script</h4>
 
 										
