@@ -63,7 +63,7 @@
 										
 									</header>
 
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">This project demonstrates the implementation of a modern data stack and the development of a robust data pipeline for a retail company. It leverages a combination of Python for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Airiflow</span>  for production to efficiently move data from PostgreSQL database to an OLAP system.
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">This project demonstrates the implementation of a modern data stack and the development of a robust data pipeline for a retail company. It leverages a combination of Python for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span>  for production to efficiently move data from PostgreSQL database to BigQuery data warehouse for analytical processing.
 										<!-- This end-to-end solution demonstrates best practices in data engineering and modern data management. -->
 									</p>
 
@@ -95,7 +95,7 @@
 									<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Airflow Weberver UI</h3>
 									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
 									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Key Questions</h4>
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">It's crucial to address several key questions to ensure the success of the initiative. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. Some of the key questions include: <br>
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">It's crucial to address several key questions to ensure the success of the initiative. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. Five key questions: <br>
 										<!-- I. Where is our data?  Source <br>
 										II. Where do we consolidate our data?  Storage <br>
 										III. How will we get it there?  Ingestion <br>
@@ -132,6 +132,8 @@
 										<span class="text-bold">docs/</span> - Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
 										</p>
 
+
+										<!-- CONFIGURATION CLASS-->
 										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">config/</h5>
 
 										<pre class="py-code">
@@ -162,97 +164,112 @@
 
 									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">dags/</h5>
 									<p class="paragraph" style="text-align: center;">**Return back later once whole scripts is in place.**</p>
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/</h5>
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
-		args{
-			<span class="code-text">”owner”</span> : <span class="code-text">BO859545</span> ,
-			<span class="code-text">"retries"</span>: 1,
-			<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
-			}
 
-		<span class="airflow-call">@dag</span>(
-			default_arguments = args
-			Schedule=timedelta(minutes=30),
-			start_date=datetime(2024, 7, 29),
-			catchup= <span class="code-func">False</span>,
-			tags=[<span class="code-text">'DataOps Team'</span>]
-			)
-										</code>
-									</pre>
+									<!-- EXTRACT CLASS -->
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/<br>implementing extract class</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
-		args{
-			<span class="code-text">”owner”</span> : <span class="code-text">BO859545</span> ,
-			<span class="code-text">"retries"</span>: 1,
-			<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
-			}
+		<span class="code-comment"># extract class</span>
+		<span class="py-method">import</span> pandas as pd
+		<span class="py-method">import</span> requests
+		<spam class="py-method">import</spam> sqlalchemy
 
-		<span class="airflow-call">@dag</span>(
-			default_arguments = args
-			Schedule=timedelta(minutes=30),
-			start_date=datetime(2024, 7, 29),
-			catchup= <span class="code-func">False</span>,
-			tags=[<span class="code-text">'DataOps Team'</span>]
-			)
+		<span class="code-func">class</span> Extractor:
+			<span class="code-func">def</span> __init__(self, source_type, config):
+				self.source_type = source_type
+				self.config = config
+
+			<span class="code-func">def</span> extract(self):
+				if self.source_type == 'csv':
+					return self._extract_csv()
+				elif self.source_type == 'api':
+					return self._extract_api()
+				elif self.source_type == 'database':
+					return self._extract_database()
+				else:
+					raise ValueError(f"Unsupported source type: {self.source_type}")
+
+			<span class="code-func">def</span> _extract_csv(self):
+				filepath = self.config.get('filepath')
+				df = pd.read_csv(filepath)
+				print(f"Extracted {len(df)} records from CSV.")
+				return df
+
+			<span class="code-func">def</span> _extract_api(self):
+				url = self.config.get('url')
+				response = requests.get(url)
+				data = response.json()
+				df = pd.json_normalize(data)
+				print(f"Extracted {len(df)} records from API.")
+				return df
+
+			<span class="code-func">def</span> _extract_database(self):
+				connection_string = self.config.get('connection_string')
+				query = self.config.get('query')
+				engine = sqlalchemy.create_engine(connection_string)
+				df = pd.read_sql_query(query, engine)
+				print(f"Extracted {len(df)} records from Database.")
+				return df
 										</code>
 									</pre>
+
+									<!-- TRANSFORM CLASS -->
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/<br>implementing transform class</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># Task One - get tables</span>
-		<span class="airflow-call">@task()</span>
-		<span class="code-func">def</span> get_tables <span class="code-func">()</span>:
-		<span class="code-text">"""extract list of tables in public schema"""</span>
-		
-		<span class="py-method">try</span>:
-			cursor.execute(
-				f <span class="code-text">"""SELECT table_name 
-				FROM information_schema.tables 
-				WHERE table_schema = 'public'"""</span> 
-			)
+		<span class="code-comment">Transform Class</span>
+		<span class="code-func">class</span> Transformer:
+		<span class="code-func">def</span> __init__(self, transformation_functions=None):
+			<span class="code-text">
+			"""
+			transformation_functions: List of functions to apply to the dataframe
+			"""
+			self.transformation_functions = transformation_functions or []
+			</span> 
 
-		<span class="py-method">except (Exception) as</span> error:
-			print(<span class="code-text">"Error while getting tables"</span>)
-
-		<span class="py-method">finally</span>:
-			tbls = [x[0] for x in cursor.fetchall()]
-				
+		def transform(self, df):
+			for func in self.transformation_functions:
+				df = func(df)
+			print("Data transformation complete.")
+			return df
 										</code>
 									</pre>
 
-									<!-- <h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/</h5> -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/</h5>
+									<!-- LOAD CLASS -->
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/<br>implementing load class</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># Task Two - extract_load</span>
-		<span class="airflow-call">@task()</span>
-		<span class="code-func">def</span> extract_load(tbls, conn):
-		<span class="code-text">"""this task loops through tbls returned from previous task,
-		extract all columns from each tbl where the column updated
-		at >= {ds}, last execution date then loads the data"""</span>
+		class Loader:
+		def __init__(self, destination_type, config):
+			self.destination_type = destination_type
+			self.config = config
 
-			client = bigquery.Client()
-			job_config = bigquery.LoadJobConfig(
-			write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
+		def load(self, df):
+			if self.destination_type == 'database':
+				return self._load_database(df)
+			elif self.destination_type == 'csv':
+				return self._load_csv(df)
+			else:
+				raise ValueError(f"Unsupported destination type: {self.destination_type}")
 
-			<span class="py-method">for</span> tbl in tbls:
-			table_id = f<span class="code-text">"adventureworks-431609.stg.</span>{tbl}<span class="code-text">"</span>
-			sql = f"<span class="code-text">SELECT * FROM {tbl} WHERE 
-				updated_at >= {ds}'"</span>
-			df = pd.read_sql(sql, conn)
+		def _load_database(self, df):
+			connection_string = self.config.get('connection_string')
+			table_name = self.config.get('table_name')
+			engine = sqlalchemy.create_engine(connection_string)
+			df.to_sql(table_name, engine, if_exists='append', index=False)
+			print(f"Loaded {len(df)} records into database table '{table_name}'.")
+			return
 
-			job = client.load_table_from_dataframe(
-			df, table_id, job_config=job_config)
-			job.result()
+		def _load_csv(self, df):
+			filepath = self.config.get('filepath')
+			df.to_csv(filepath, index=False)
+			print(f"Loaded {len(df)} records into CSV file at '{filepath}'.")
+			return
 
-			get_tables = get_tables()
-			extract_load = extract_load(get_tables)
-				
 										</code>
 									</pre>
 
