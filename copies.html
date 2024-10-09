@@ -90,3 +90,426 @@
 										</code>
 									</pre>
 
+
+
+
+									<!DOCTYPE HTML>
+
+									<html>
+										<head>
+											<title>BO859545</title>
+											<meta charset="utf-8" />
+											<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+											<link rel="stylesheet" href="assets/css/main.css" />
+											<link rel="stylesheet" href="assets/css/sec.css" />
+											<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+									
+											<style>
+											
+									
+											</style>
+											
+										</head>
+										<body class="is-preload">
+									
+											<!-- Wrapper -->
+												<div id="wrapper">
+									
+													<!-- Header -->
+														<header id="header">
+															<a href="index.html" class="logo"><strong>bo</strong> <span>859545</span></a>
+															<nav>
+																<a href="#menu">Menu</a>
+															</nav>
+														</header>
+									
+													<!-- Menu -->
+														<nav id="menu">
+															<ul class="links">
+																<li><a href="index.html">Home</a></li>
+																<li><a href="engineering.html">Engineering</a></li>
+																<li><a href="reporting.html">Reporting</a></li>
+																<li><a href="python.html">Programming</a></li>
+																<li><a href="visualization.html">Visualization</a></li>
+																<li><a href="ml.html">Machine Learning</a></li>
+																<li><a href="big-data.html">Big Data</a></li>
+															</ul>
+														</nav>
+									
+													<!-- Main -->
+														<div id="main" class="alt">
+									
+															<!-- One -->
+																<section id="one" style="background-color: white;">
+																	<div class="inner">
+																		<header class="major" style="margin: 0 auto;">
+																			 
+																			<!-- <nav id="sub-menu">
+																				<ul class="tertiary-nav" style="margin: auto 0;">
+																					<li><a href="engineering.html">Airflow</a></li>
+																					<li><a href="dagster.html">Dagster</a></li>
+																					<li><a href="template.html">AWS Glue</a></li>
+																					<li><a href="template.html">Azure Data Factory</a></li>
+																				</ul>
+																			</nav> -->
+										
+																			<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Building Data Pipeline</h2>
+																			<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Data Acquisition</h4>
+																			
+																		</header>
+									
+																		<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">This project demonstrates the implementation of a modern data stack and the development of a modular data pipeline for a retail company. It leverages a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span>  for production to efficiently move data from <span class="highlight">PostgreSQL</span> database to BigQuery data warehouse for analytical processing.
+																			<!-- This end-to-end solution demonstrates best practices in data engineering and modern data management. -->
+																		</p>
+									
+																		<!-- Content -->
+									
+																		<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Apache Airflow - Set Up</h4>
+																				
+																			<pre class="py-code">
+																				<code style="margin: 0; padding: 0;">
+											<span class="code-comment"># Apache Airflow - Local Set-Up</span>
+											$ python3 -m venv airflow-env <span class="code-comment"> # create virtual environment</span>
+											$ source airflow-env/bin/activate <span class="code-comment"> # activate virtual environment</span>
+											$ export AIRFLOW_HOME=~/airflow 
+											$ pip install apache-airflow
+											$ airflow db init
+											$ airflow webserver -p 8080 <span class="code-comment">#launch webserver</span>
+											$ airflow sheduler <span class="code-comment">#launch scheduler</span>
+																					</code>
+																				</pre>
+									
+																				<pre class="py-code">
+																					<code style="margin: 0; padding: 0;">
+												<span class="code-comment"># installing dependencies</span>
+												pip install google-cloud-bigquery
+												pip install --upgrade snowflake-connector-python
+																					</code>
+																				</pre>
+									
+																		<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Airflow Weberver UI</h3>
+																		<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
+																		<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Key Questions</h4>
+																		<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">It's crucial to address several key questions to ensure the success of the initiative. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. The five key questions: <br>
+																		</p> 
+									
+																		<pre style="color: #545454; font-size: 16px;">
+															I. Where is our data?  <span class="highlight">Source</span>
+															II. Where do we consolidate our data? <span class="highlight">Storage</span>
+															III. How will we get it there? <span class="highlight">Ingestion</span>
+															IV. How will we clean it up? <span class="highlight">Transformation</span>
+															V. How will we analyze it? <span class="highlight">Reporting</span>
+																		</pre>
+									
+																		<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
+																		<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
+									
+																		
+																		<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Project's Structure</h4>
+																		<p class="paragraph">Using object-oriented programming (OOP) with Python classes can help structure our ETL/ELT processes in a modular, reusable, and maintainable way. It also ensures separation of concerns and makin it easier to scale our ETL/ELT processes, debug issues, and onboard new team members.
+																		</p>
+									
+																		<!-- <p class="paragraph">I'll create separate classes for each ETL step: Extractor, Transformer, and Loader. Additionally, we'll have an ETLPipeline class to orchestrate these steps.
+																		</p> -->
+									
+																		<p class="paragraph">
+																			<span class="text-bold">config/</span> - Configuration files, such as environment variables, database connections, and credentials. <br>
+																			<span class="text-bold">dags/</span> - For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
+																			<span class="text-bold">extract/</span> - Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
+																			<spam class="text-bold">transform/</spam> - Transformation logic is applied here, e.g., data cleaning, formatting, normalization, or aggregation. <br>
+																			<span class="text-bold">load/</span> - Loading scripts to push the transformed data into the final destination (data warehouse, databases). <br>
+																			<span class="text-bold">utils/</span> - Utility scripts such as common functions for error handling, logging, or reusable snippets. <br>
+																			<span class="text-bold">logs/</span> - Centralized directory for log files to monitor your ETL runs. You may want to separate logs by date or pipeline. <br>
+																			<span class="text-bold">tests/</span> - Unit and integration tests to ensure each component works as expected. <br>
+																			<span class="text-bold">data/</span> - A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
+																			<span class="text-bold">docs/</span> - Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
+																			</p>
+									
+									
+																			<!-- CONFIGURATION CLASS-->
+																			<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">config/</h5>
+									
+																			<pre class="py-code">
+																				<code>
+											<spam class="code-comment"># config/config.yaml</spam>
+											extract-config = {
+												'connection_string': postgresql://bo859545:p*ssword@localhost:5432/adw_db',}
+												'tbl_names' = ['customer','product','product_category',
+														'product_subcategory', 'returns', 'sales',
+														'territory']
+									
+											source:
+											type: database
+											database:
+												engine: postgresql
+												host: localhost
+												port: 5432
+												name: adw_db
+												user: **
+												password: ${SOURCE_DB_PASSWORD}  # Referenced
+									
+											target:
+											type: data warehouse
+											database:
+												engine: postgresql
+												host: localhost
+												port: 5432
+												name: target_db
+												user: target_user
+												password: ${TARGET_DB_PASSWORD}  # Referenced
+												table: "processed_users"
+																			</code>
+																		</pre>
+									
+																		<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">dags/</h5>
+																		<p class="paragraph" style="text-align: center;">**Return when whole scripts is in place.**</p>
+									
+																		<!-- EXTRACT CLASS -->
+																		<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/</h5>
+									
+																		<pre class="py-code">
+																			<code style="margin: 0; padding: 0;">
+											<span class="code-comment"># extract class</span>
+											<span class="py-method">import</span> pandas as pd
+											<span class="py-method">import</span> requests
+											<spam class="py-method">import</spam> sqlalchemy
+									
+											<span class="code-func">class</span> Extractor:
+												<span class="code-func">def</span> __init__(self, source_type, config):
+													self.source_type = source_type
+													self.config = config
+									
+													<span class="code-text">"""Data Source Selector"""</span>
+													<span class="code-func">def</span> extract(self):
+													<span class="py-method">if</span> self.source_type == <span class="code-text">'csv'</span>:
+														<span class="py-method">return</span> self._extract_csv()
+													<span class="py-method">elif</span> self.source_type == <span class="code-text">'api'</span>:
+														<span class="py-method">return</span> self._extract_api()
+													<span class="py-method">elif</span> self.source_type == <span class="code-text">'database'</span>:
+														<span class="py-method">return</span> self._extract_database()
+													<span class="py-method">else</span>:
+													<span class="py-method">raise</span> <span class="code-func">ValueError</span> (
+														f<span class="code-text">"Unsupported source type:</span> {self.source_type}<span class="code-text">"</span>)
+												
+												<span class="code-text">"""csv extractor"""</span>
+												<span class="code-func">def</span> _extract_csv(self):
+													filepath = self.config.get(<span class="code-text">'filepath'</span>)
+													df = pd.read_csv(filepath)
+													<span class="py-method">print</span>(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from CSV."</span>)
+													<span class="py-method">return</span> df
+									
+												<span class="code-text">"""api extractor"""</span>
+												<span class="code-func">def</span> _extract_api(self):
+													url = self.config.get(<span class="code-text">'url'</span>)
+													response = requests.get(url)
+													data = response.json()
+													df = pd.json_normalize(data)
+													<span class="py-method">print</span>(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from API."</span>)
+													<span class="py-method">return</span> df
+									
+												<span class="code-text">"""database extractor"""</span>
+												<span class="code-func">def</span> _extract_database(self):
+													connection_string = self.config.get(<span class="code-text">'connection_string'</span>)
+													query = self.config.get(<span class="code-text">'query'</span>)
+													engine = sqlalchemy.create_engine(connection_string)
+													df = pd.read_sql_query(query, engine)
+													<span class="py-method">print</span>(f <span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from Database."</span>)
+													<span class="py-method">return</span> df
+																			</code>
+																		</pre>
+									
+																		<!-- TRANSFORM CLASS -->
+																		<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/</h5>
+									
+																		<pre class="py-code">
+																			<code style="margin: 0; padding: 0;">
+											<span class="code-comment">transform class</span>
+											<span class="code-func">class</span> Transformer:
+											<span class="code-func">def</span> __init__(self, transformation_functions=None):
+												<span class="code-text">
+												"""
+												transformation_functions: List of functions to apply to the dataframe
+												"""
+												self.transformation_functions = transformation_functions or []
+												</span> 
+									
+											<span class="code-func">def</span> transform(self, df):
+												for func in self.transformation_functions:
+													df = func(df)
+												<span class="py-method">print</span>(<span class="code-text">"transformation complete."</span> )
+												<span class="py-method">return</span> df
+																			</code>
+																		</pre>
+									
+																		<!-- LOAD CLASS -->
+																		<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/</h5>
+									
+																		<pre class="py-code">
+																			<code style="margin: 0; padding: 0;">
+											<span class="code-comment">LOAD CLASS</span>
+											<span class="code-func">class</span> Loader:
+											<span class="code-func">def</span> __init__(self, destination_type, config):
+												self.destination_type = destination_type
+												self.config = config
+									
+											<span class="code-text">"""Target Selector"""</span>
+											<span class="code-func">def</span> load(self, df):
+												<span class="py-method">if</span> self.destination_type == <span class="code-text">'database'</span>:
+													<span class="py-method">return</span> self._load_database(df)
+												<span class="py-method">elif</span> self.destination_type == <span class="code-text">'csv'</span>:
+													<span class="py-method">return</span> self._load_csv(df)
+												<span class="py-method">else</span>:
+												<span class="py-method">raise</span> <span class="code-func">ValueError</span> (f<span class="code-text">"Unsupported destination type:</span> {self.destination_type}<span class="code-text">"</span>)
+									
+											<span class="code-text">"""database | data warehouse loader"""</span>
+											<span class="code-func">def</span> _load_database(self, df):
+												connection_string = self.config.get(<span class="code-text">'connection_string'</span>)
+												table_name = self.config.get(<span class="code-text">'table_name'</span>)
+												engine = sqlalchemy.create_engine(connection_string)
+												df.to_sql(table_name, engine, if_exists=<span class="code-text">'append'</span>, index=False)
+												<span class="py-method">print</span>(f<span class="code-text">"Loaded {len(df)} records into database table </span>'{table_name}'<span class="code-text">." </span>)
+												<span class="py-method">return</span>
+									
+												<span class="code-text">"""csv loader"""</span>
+											<span class="code-func">def</span> _load_csv(self, df):
+												filepath = self.config.get(<span class="code-text">'filepath'</span>)
+												df.to_csv(filepath, index=False)
+												<span class="py-method">print</span> (f<span class="code-text">"Loaded</span> {len(df)} <span class="code-text">records into CSV file at</span> '{filepath}'<span class="code-text">."</span>)
+												<span class="py-method">return</span>
+									
+																			</code>
+																		</pre>
+																		
+																		<!-- PUTTING THE PIECES TOGETHER -->
+																		<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Putting the Pieces Together</h4>
+																		<pre class="py-code">
+																			<code style="margin: 0; padding: 0;">
+											# Extractor configuration
+											extract_config = {
+												'filepath': 'data/input_data.csv'
+											}
+											
+											# Loader configuration
+											load_config = {
+												'connection_string': 'postgresql://username:password@localhost:5432/mydatabase',
+												'table_name': 'cleaned_data'
+											}
+									
+											# Create Extractor
+											extractor = Extractor(source_type='csv', config=extract_config)
+									
+											# Create Transformer with defined transformation functions
+											transformer = Transformer(transformation_functions=[
+												clean_data,
+												convert_types,
+												add_computed_column
+											])
+									
+											# Create Loader
+											loader = Loader(destination_type='database', config=load_config)
+									
+											# Create ETLPipeline
+											etl_pipeline = ETLPipeline(extractor, transformer, loader)
+									
+											if __name__ == "__main__":
+												etl_pipeline.run()
+																			</code>
+																		</pre>
+									
+									
+																		<!-- ORCHESTRATION IN AIRFLOW -->
+																		<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Orchestrating Pipeline - Apache Airflow</h4>
+																		<pre class="py-code">
+																			<code style="margin: 0; padding: 0;">
+											<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
+											args{
+												<span class="code-text">”owner”</span> : <span class="code-text">BO859545</span> ,
+												<span class="code-text">"retries"</span>: 1,
+												<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
+												}
+									
+											<span class="airflow-call">@dag</span>(
+												default_arguments = args
+												Schedule=timedelta(minutes=30),
+												start_date=datetime(2024, 7, 29),
+												catchup= <span class="code-func">False</span>,
+												tags=[<span class="code-text">'DataOps Team'</span>]
+												)
+																			</code>
+																		</pre>
+									
+																		<pre class="py-code">
+																			<code style="margin: 0; padding: 0;">
+											<span class="airflow-call">@task()</span>
+											<span class="code-func">def</span> get_tables <span class="code-func">()</span>:
+											<span class="code-text">"""extract list of tables in public schema"""</span>
+											
+											<span class="py-method">try</span>:
+												cursor.execute(
+													f <span class="code-text">"""SELECT table_name 
+													FROM information_schema.tables 
+													WHERE table_schema = 'public'"""</span> 
+												)
+									
+											<span class="py-method">except (Exception) as</span> error:
+												print(<span class="code-text">"Error while getting tables"</span>)
+									
+											<span class="py-method">finally</span>:
+												tbls = [x[0] for x in cursor.fetchall()]
+													
+																			</code>
+																		</pre>
+									
+																		<pre class="py-code">
+																			<code style="margin: 0; padding: 0;">
+											<span class="airflow-call">@task()</span>
+											<span class="code-func">def</span> extract_load(tbls, conn):
+											<span class="code-text">"""this task loops through tbls returned from previous task,
+											extract all columns from each tbl where the column updated
+											at >= {ds}, last execution date then loads the data"""</span>
+									
+												client = bigquery.Client()
+												job_config = bigquery.LoadJobConfig(
+												write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
+									
+												<span class="py-method">for</span> tbl in tbls:
+												table_id = f<span class="code-text">"adventureworks-431609.stg.</span>{tbl}<span class="code-text">"</span>
+												sql = f"<span class="code-text">SELECT * FROM {tbl} WHERE 
+													updated_at >= {ds}'"</span>
+												df = pd.read_sql(sql, conn)
+									
+												job = client.load_table_from_dataframe(
+												df, table_id, job_config=job_config)
+												job.result()
+									
+												get_tables = get_tables()
+												extract_load = extract_load(get_tables)
+													
+																			</code>
+																		</pre>
+									
+									
+									
+									
+																		<a href="images/VIII.png" target="_blank"><img class="image" src="images/VIII.png" alt="" /></a>
+																		<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
+																		<a href="images/load.png" target="_blank"><img class="image" src="images/load.png" alt="" /></a>
+									
+																		<!-- <h4 style="color: #949494; text-align:center; margin-top: 70px; margin-bottom: 0;" id="content">Running dbt Models</h4> -->
+																		<!-- <a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a> -->
+																	
+														</div>
+									
+											<!-- Scripts -->
+												<script src="assets/js/jquery.min.js"></script>
+												<script src="assets/js/jquery.scrolly.min.js"></script>
+												<script src="assets/js/jquery.scrollex.min.js"></script>
+												<script src="assets/js/browser.min.js"></script>
+												<script src="assets/js/breakpoints.min.js"></script>
+												<script src="assets/js/util.js"></script>
+												<script src="assets/js/main.js"></script>
+									
+										</body>
+									</html>								
+
+									the next phase: Asking five key questions crucial to the successs of project and organizing the file structure for the entire project.

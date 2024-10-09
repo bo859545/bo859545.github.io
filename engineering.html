@@ -63,13 +63,13 @@
 										
 									</header>
 
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">This project demonstrates the implementation of a modern data stack and the development of a robust data pipeline for a retail company. It leverages a combination of Python for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span>  for production to efficiently move data from PostgreSQL database to BigQuery data warehouse for analytical processing.
-										<!-- This end-to-end solution demonstrates best practices in data engineering and modern data management. -->
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">This project demonstrates the implementation of a modern data stack and the development of a modular data pipeline for a retail company. It leverages a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span>  for production to efficiently move data from <span class="highlight">PostgreSQL</span> database to BigQuery data warehouse for analytical processing.
 									</p>
 
 									<!-- Content -->
 
 									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Apache Airflow - Set Up</h4>
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">I'll kick off the project by installing a local instance of Apache Airflow on Linux a machine via the Terminal, once Airflow Webserver and Scheduler are up and running, I'll proceed to install required dependencies for the project.</p>
 											
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
@@ -94,14 +94,8 @@
 
 									<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Airflow Weberver UI</h3>
 									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
-									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Key Questions</h4>
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">It's crucial to address several key questions to ensure the success of the initiative. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. Five key questions: <br>
-										<!-- I. Where is our data?  Source <br>
-										II. Where do we consolidate our data?  Storage <br>
-										III. How will we get it there?  Ingestion <br>
-										IV. How will we clean it up?  Transformation <br>
-										V. How will we analyze it?  Reporting <br> -->
-										
+									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Five Key Questions</h4>
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">Now that Airflow is up and running, it's crucial to address several key questions to ensure success of the initiative. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. <br>
 									</p> 
 
 									<pre style="color: #545454; font-size: 16px;">
@@ -112,12 +106,16 @@
 						V. How will we analyze it? <span class="highlight">Reporting</span>
 									</pre>
 
-									<a href="images/IV.png" target="_blank"><img class="image"src="images/IV.png" alt=""/></a>
-									<a href="images/XI.png" target="_blank"><img class="image" src="images/XI.png" alt="" /></a>
+									<a href="images/source_postgresql.png" target="_blank"><img class="image"src="images/source_postgresql.png" alt=""/></a>
+									<a href="images/destination_bigquery.png" target="_blank"><img class="image" src="images/destination_bigquery.png" alt="" /></a>
 
 									
-									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Project's File Structure</h4>
-									<p class="paragraph">Implementing the project's file structure ensures separation of concerns and makes it easier to scale your ETL/ELT projects, debug issues, and onboard new team members.</p>
+									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Project's Structure</h4>
+									<p class="paragraph">Using object-oriented programming (OOP) with Python classes can help structure the processes in a modular, reusable, and maintainable way. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.
+									</p>
+
+									<!-- <p class="paragraph">I'll create separate classes for each ETL step: Extractor, Transformer, and Loader. Additionally, we'll have an ETLPipeline class to orchestrate these steps.
+									</p> -->
 
 									<p class="paragraph">
 										<span class="text-bold">config/</span> - Configuration files, such as environment variables, database connections, and credentials. <br>
@@ -138,35 +136,31 @@
 
 										<pre class="py-code">
 											<code>
-		<spam class="code-comment"># config/config.yaml</spam>
-		source:
-		type: database
-		database:
-			engine: postgresql
-			host: localhost
-			port: 5432
-			name: adw_db
-			user: **
-			password: ${SOURCE_DB_PASSWORD}  # Referenced
+	<spam class="code-comment"># config/</spam>
+	extract_config = {
+		'connection_string': <span class="code-text">'postgresql://bo859545:p*ssword@localhost:5432/adw_db'</span>,
+		'tbl_names' = [<span class="code-text">'customer','product','product_category',
+				'product_subcategory', 'returns', 'sales',
+				'territory'</span>]
+		'table_query' =  f<span class="code-text">"""SELECT table_name FROM information_schema.tables
+				   WHERE table_schema = 'public'"""</span>
+					 
+		'extract_query' = f<span class="code-text">"""SELECT * FROM {tbl} WHERE updated_at >= {ds}"</span> 
+	}
 
-		target:
-		type: data warehouse
-		database:
-			engine: postgresql
-			host: localhost
-			port: 5432
-			name: target_db
-			user: target_user
-			password: ${TARGET_DB_PASSWORD}  # Referenced
-			table: "processed_users"
+	load_config = {
+		client = bigquery.Client()
+		job_config = bigquery.LoadJobConfig(
+		write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
+	}
 										</code>
 									</pre>
 
 									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">dags/</h5>
-									<p class="paragraph" style="text-align: center;">**Return back later once whole scripts is in place.**</p>
+									<p class="paragraph" style="text-align: center;">**Return when whole scripts is in place.**</p>
 
 									<!-- EXTRACT CLASS -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/<br>implementing extract class</h5>
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
@@ -180,46 +174,61 @@
 				self.source_type = source_type
 				self.config = config
 
-			<span class="code-func">def</span> extract(self):
-				if self.source_type == 'csv':
-					return self._extract_csv()
-				elif self.source_type == 'api':
-					return self._extract_api()
-				elif self.source_type == 'database':
-					return self._extract_database()
-				else:
-					raise ValueError(f"Unsupported source type: {self.source_type}")
-
+				<span class="code-text">"""Data Source Selector"""</span>
+				<span class="code-func">def</span> extract(self):
+				<span class="py-method">if</span> self.source_type == <span class="code-text">'csv'</span>:
+					<span class="py-method">return</span> self._extract_csv()
+				<span class="py-method">elif</span> self.source_type == <span class="code-text">'api'</span>:
+					<span class="py-method">return</span> self._extract_api()
+				<span class="py-method">elif</span> self.source_type == <span class="code-text">'database'</span>:
+					<span class="py-method">return</span> self._extract_database()
+				<span class="py-method">else</span>:
+				<span class="py-method">raise</span> <span class="code-func">ValueError</span> (
+					f<span class="code-text">"Unsupported source type:</span> {self.source_type}<span class="code-text">"</span>)
+			
+			<span class="code-text">"""csv extractor"""</span>
 			<span class="code-func">def</span> _extract_csv(self):
-				filepath = self.config.get('filepath')
+				filepath = self.config.get(<span class="code-text">'filepath'</span>)
 				df = pd.read_csv(filepath)
-				print(f"Extracted {len(df)} records from CSV.")
-				return df
+				<span class="py-method">print</span>(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from CSV."</span>)
+				<span class="py-method">return</span> df
 
+			<span class="code-text">"""api extractor"""</span>
 			<span class="code-func">def</span> _extract_api(self):
-				url = self.config.get('url')
+				url = self.config.get(<span class="code-text">'url'</span>)
 				response = requests.get(url)
 				data = response.json()
 				df = pd.json_normalize(data)
-				print(f"Extracted {len(df)} records from API.")
-				return df
+				<span class="py-method">print</span>(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from API."</span>)
+				<span class="py-method">return</span> df
 
+			<span class="code-text">"""database extractor"""</span>
 			<span class="code-func">def</span> _extract_database(self):
-				connection_string = self.config.get('connection_string')
-				query = self.config.get('query')
+				connection_string = self.config.get(<span class="code-text">'connection_string'</span>)
+				table_query = self.config.get(<span class="code-text">'table_query'</span>)
+				extract_query = self.config.get(<span class="code-text">'extract_query'</span>)
 				engine = sqlalchemy.create_engine(connection_string)
-				df = pd.read_sql_query(query, engine)
-				print(f"Extracted {len(df)} records from Database.")
-				return df
+
+				<span class="code-text">"""get list of tables"""</span>
+				cursor.execute(table_query)
+				tbls = [x[0] for x in cursor.fetchall()]
+
+				for tbl in tbls:
+				df = pd.read_sql(extract_query, conn)
+
+				<span class="code-text">"""alternative"""</span>
+				df = pd.read_sql_query(extract_query, engine)
+				<span class="py-method">print</span>(f <span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from Database."</span>)
+				<span class="py-method">return</span> df
 										</code>
 									</pre>
 
 									<!-- TRANSFORM CLASS -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/<br>implementing transform class</h5>
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment">Transform Class</span>
+		<span class="code-comment">transform class</span>
 		<span class="code-func">class</span> Transformer:
 		<span class="code-func">def</span> __init__(self, transformation_functions=None):
 			<span class="code-text">
@@ -229,51 +238,81 @@
 			self.transformation_functions = transformation_functions or []
 			</span> 
 
-		def transform(self, df):
+		<span class="code-func">def</span> transform(self, df):
 			for func in self.transformation_functions:
 				df = func(df)
-			print("Data transformation complete.")
-			return df
+			<span class="py-method">print</span>(<span class="code-text">"transformation complete."</span> )
+			<span class="py-method">return</span> df
 										</code>
 									</pre>
 
 									<!-- LOAD CLASS -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/<br>implementing load class</h5>
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># Task Two - extract_load</span>
-		class Loader:
-		def __init__(self, destination_type, config):
+		<span class="code-comment">LOAD CLASS</span>
+		<span class="code-func">class</span> Loader:
+		<span class="code-func">def</span> __init__(self, destination_type, config):
 			self.destination_type = destination_type
 			self.config = config
 
-		def load(self, df):
-			if self.destination_type == 'database':
-				return self._load_database(df)
-			elif self.destination_type == 'csv':
-				return self._load_csv(df)
-			else:
-				raise ValueError(f"Unsupported destination type: {self.destination_type}")
+		<span class="code-text">"""Target Selector"""</span>
+		<span class="code-func">def</span> load(self, df):
+			<span class="py-method">if</span> self.destination_type == <span class="code-text">'database'</span>:
+				<span class="py-method">return</span> self._load_database(df)
+			<span class="py-method">elif</span> self.destination_type == <span class="code-text">'csv'</span>:
+				<span class="py-method">return</span> self._load_csv(df)
+			<span class="py-method">else</span>:
+			<span class="py-method">raise</span> <span class="code-func">ValueError</span> (f<span class="code-text">"Unsupported destination type:</span> {self.destination_type}<span class="code-text">"</span>)
 
-		def _load_database(self, df):
-			connection_string = self.config.get('connection_string')
-			table_name = self.config.get('table_name')
+		<span class="code-text">"""database | data warehouse loader"""</span>
+		<span class="code-func">def</span> _load_database(self, df):
+			connection_string = self.config.get(<span class="code-text">'connection_string'</span>)
+			table_name = self.config.get(<span class="code-text">'table_name'</span>)
 			engine = sqlalchemy.create_engine(connection_string)
-			df.to_sql(table_name, engine, if_exists='append', index=False)
-			print(f"Loaded {len(df)} records into database table '{table_name}'.")
-			return
+			df.to_sql(table_name, engine, if_exists=<span class="code-text">'append'</span>, index=False)
+			<span class="py-method">print</span>(f<span class="code-text">"Loaded {len(df)} records into database table </span>'{table_name}'<span class="code-text">." </span>)
+			<span class="py-method">return</span>
 
-		def _load_csv(self, df):
-			filepath = self.config.get('filepath')
+		<span class="code-text">"""csv loader"""</span>
+		<span class="code-func">def</span> _load_csv(self, df):
+			filepath = self.config.get(<span class="code-text">'filepath'</span>)
 			df.to_csv(filepath, index=False)
-			print(f"Loaded {len(df)} records into CSV file at '{filepath}'.")
-			return
+			<span class="py-method">print</span> (f<span class="code-text">"Loaded</span> {len(df)} <span class="code-text">records into CSV file at</span> '{filepath}'<span class="code-text">."</span>)
+			<span class="py-method">return</span>
 
 										</code>
 									</pre>
+									
+									<!-- PUTTING THE PIECES TOGETHER -->
+									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Putting the Pieces Together</h5>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="code-comment"># Create Extractor</span>
+		extractor = Extractor(source_type=<span class="code-text">'database'</span>, config=extract_config)
 
-									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Orchestrating Pipeline - Apache Airflow</h4>
+		<span class="code-comment"># Create Transformer with defined transformation functions</span>
+		transformer = Transformer(transformation_functions=[
+			clean_data,
+			convert_types,
+			add_computed_column
+		])
+
+		<span class="code-comment"># Create Loader</span>
+		loader = Loader(destination_type='database', config=load_config)
+
+		<span class="code-comment"># Create ETLPipeline</span>
+		etl_pipeline = ETLPipeline(extractor, transformer, loader)
+
+		if __name__ == "__main__":
+    		etl_pipeline.run()
+										</code>
+									</pre>
+
+
+									<!-- ORCHESTRATION IN AIRFLOW -->
+									<h5 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Orchestration - Apache Airflow <br>dag/</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
@@ -343,8 +382,13 @@
 										</code>
 									</pre>
 
-									<a href="images/VIII.png" target="_blank"><img class="image" src="images/VIII.png" alt="" /></a>
+
+
+
+									<a href="images/VIII.png" target="_blank"><img class="image" src="images/orchestration_airflow.png" alt="" /></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
+									<a href="images/load.png" target="_blank"><img class="image" src="images/load.png" alt="" /></a>
+
 									<!-- <h4 style="color: #949494; text-align:center; margin-top: 70px; margin-bottom: 0;" id="content">Running dbt Models</h4> -->
 									<!-- <a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a> -->
 								
