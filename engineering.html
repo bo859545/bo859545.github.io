@@ -58,17 +58,17 @@
 											</ul>
 										</nav> -->
 	
-										<h2 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Building Data Pipeline</h2>
-										<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Data Acquisition</h4>
+										<h2 style="color: #949494; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Building Data Pipeline</h2>
+										<h4 style="color: #545454; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Data Acquisition</h4>
 										
 									</header>
 
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">A modular data pipeline for a retail company. I'll leverage a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span> for production to efficiently move data from a <span class="highlight">PostgreSQL</span> database to BigQuery data warehouse for analytical processing.
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">A modular data pipeline for a retail company. I'll leverage a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span> for production to efficiently move data from a <span class="highlight">PostgreSQL</span> database to BigQuery for analytical processing.
 									</p>
 
 									<!-- Content -->
 
-									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Apache Airflow - Set Up</h4>
+									<h4 style="color: #949494; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Apache Airflow - Set Up</h4>
 									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">I'll kick off the project by installing a local instance of Apache Airflow on Linux a machine via the Terminal, once Airflow Webserver and Scheduler are up and running, I'll proceed to install required dependencies for the project.</p>
 											
 										<pre class="py-code">
@@ -92,9 +92,9 @@
 												</code>
 											</pre>
 
-									<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Airflow Weberver UI</h3>
+									<h3 style="color: #949494; text-align:center; margin-bottom: 0; font-weight: 300;" id="content">Airflow Weberver UI</h3>
 									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
-									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Five Key Questions</h4>
+									<h4 style="color: #949494; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Five Key Questions</h4>
 									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">Now that Airflow is up and running, it's crucial to address several key questions to ensure success of our project. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. <br>
 									</p> 
 
@@ -110,7 +110,7 @@
 									<a href="images/destination_bigquery.png" target="_blank"><img class="image" src="images/destination_bigquery.png" alt="" /></a>
 
 									
-									<h4 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Project's Structure</h4>
+									<h4 style="color: #949494; text-align:center; margin-top: 40px; font-weight: 500;" id="content">Project's Structure</h4>
 									<p class="paragraph">Using object-oriented programming (OOP) with Python classes can help structure the processes in a modular, reusable, and maintainable way. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.
 									</p>
 
@@ -158,11 +158,11 @@
 										</code>
 									</pre>
 
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">dags/</h5>
-									<p class="paragraph" style="text-align: center;">**Return when whole scripts is in place.**</p>
+									<!-- <h5 class="heading_five">dags/</h5>
+									<p class="paragraph" style="text-align: center;">**Return when whole scripts is in place.**</p> -->
 
 									<!-- EXTRACT CLASS -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">extract/</h5>
+									<h5 class="heading_five">extract/</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
@@ -226,7 +226,7 @@
 									</pre>
 
 									<!-- TRANSFORM CLASS -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">transform/</h5>
+									<h5 class="heading_five">transform/</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
@@ -249,7 +249,7 @@
 									</pre>
 
 									<!-- LOAD CLASS -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">load/</h5>
+									<h5 class="heading_five">load/</h5>
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
@@ -288,7 +288,7 @@
 									</pre>
 									
 									<!-- PUTTING THE PIECES TOGETHER -->
-									<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">Putting the Pieces Together</h5>
+									<h5 class="heading_five">Putting the Pieces Together</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># Create Extractor</span>
@@ -314,7 +314,7 @@
 
 
 									<!-- ORCHESTRATION IN AIRFLOW -->
-									<h5 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Orchestration - Apache Airflow <br>dag/</h5>
+									<h5 class="heading_five">dag/ <br>Airflow ETL/ELT Workflow</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
@@ -386,7 +386,7 @@
 
 
 
-
+									<h5 class="heading_five">Orchestration <br> Apache Airflow</h5>
 									<a href="images/VIII.png" target="_blank"><img class="image" src="images/orchestration_airflow.png" alt="" /></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
 									<a href="images/load.png" target="_blank"><img class="image" src="images/load.png" alt="" /></a>
