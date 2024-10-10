@@ -63,7 +63,7 @@
 										
 									</header>
 
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">This project demonstrates the implementation of a modern data stack and the development of a modular data pipeline for a retail company. It leverages a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span>  for production to efficiently move data from <span class="highlight">PostgreSQL</span> database to BigQuery data warehouse for analytical processing.
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">A modular data pipeline for a retail company. I'll leverage a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span> for production to efficiently move data from a <span class="highlight">PostgreSQL</span> database to BigQuery data warehouse for analytical processing.
 									</p>
 
 									<!-- Content -->
@@ -95,7 +95,7 @@
 									<h3 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Airflow Weberver UI</h3>
 									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
 									<h4 style="color: #949494; text-align:center; margin-bottom: 0;" id="content">Five Key Questions</h4>
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">Now that Airflow is up and running, it's crucial to address several key questions to ensure success of the initiative. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. <br>
+									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">Now that Airflow is up and running, it's crucial to address several key questions to ensure success of our project. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. <br>
 									</p> 
 
 									<pre style="color: #545454; font-size: 16px;">
@@ -117,7 +117,7 @@
 									<!-- <p class="paragraph">I'll create separate classes for each ETL step: Extractor, Transformer, and Loader. Additionally, we'll have an ETLPipeline class to orchestrate these steps.
 									</p> -->
 
-									<p class="paragraph">
+									<!-- <p class="paragraph">
 										<span class="text-bold">config/</span> - Configuration files, such as environment variables, database connections, and credentials. <br>
 										<span class="text-bold">dags/</span> - For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
 										<span class="text-bold">extract/</span> - Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
@@ -128,11 +128,13 @@
 										<span class="text-bold">tests/</span> - Unit and integration tests to ensure each component works as expected. <br>
 										<span class="text-bold">data/</span> - A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
 										<span class="text-bold">docs/</span> - Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
-										</p>
+									</p> -->
+
+										<a href="images/file_structure.png" target="_blank"><img class="image"src="images/file_structure.png" alt=""/></a>
 
 
 										<!-- CONFIGURATION CLASS-->
-										<h5 style="color: #949494; text-align:center; margin-top: 40px;" id="content">config/</h5>
+										<h5 style="color: #545454; text-align:center; margin-top: 40px; font-weight:300;" id="content">config/</h5>
 
 										<pre class="py-code">
 											<code>
