@@ -139,21 +139,28 @@
 										<pre class="py-code">
 											<code>
 	<spam class="code-comment"># config/</spam>
-	extract_config = {
-		'connection_string': <span class="code-text">'postgresql://bo859545:p*ssword@localhost:5432/adw_db'</span>,
-		'tbl_names' = [<span class="code-text">'customer','product','product_category',
+
+	<span class="code-text">"""Source Configuration"""</span>
+	postgresql_config = {
+		'connection_string' : <span class="code-text">'postgresql://bo859545:p*ssword@localhost:5432/adw_db'</span>
+		'tbl_names' : [<span class="code-text">'customer','product','product_category',
 				'product_subcategory', 'returns', 'sales',
-				'territory'</span>]
-		'table_query' =  f<span class="code-text">"""SELECT table_name FROM information_schema.tables
-				   WHERE table_schema = 'public'"""</span>
+				'territory'</span>],
+		'table_query' : f<span class="code-text">"""SELECT table_name FROM information_schema.tables
+				   WHERE table_schema = 'public'"""</span>,
 					 
-		'extract_query' = f<span class="code-text">"""SELECT * FROM {tbl} WHERE updated_at >= {ds}"</span> 
+		'extract_query' : f<span class="code-text">"""SELECT * FROM {tbl} WHERE updated_at >= {ds}"</span> 
 	}
 
-	load_config = {
+	<span class="code-text">"""Target Configuration"""</span>
+	bigquery_config = {
 		client = bigquery.Client()
 		job_config = bigquery.LoadJobConfig(
 		write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
+	}
+
+	csv.config = {
+		filepath = 'filepath'
 	}
 										</code>
 									</pre>
@@ -166,61 +173,67 @@
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment"># extract class</span>
-		<span class="py-method">import</span> pandas as pd
+		<span class="py-method">import</span> pandas <span class="py-method">as</span> pd
 		<span class="py-method">import</span> requests
 		<spam class="py-method">import</spam> sqlalchemy
 
 		<span class="code-func">class</span> Extractor:
-			<span class="code-func">def</span> __init__(self, source_type, config):
-				self.source_type = source_type
-				self.config = config
+			<span class="code-func">def</span> __init__(<span class="code-func">self, data_source, config</span>):
+				<span class="code-func">self</span>.data_source = data_source
+				<span class="code-func">self</span>.config = config
 
-				<span class="code-text">"""Data Source Selector"""</span>
-				<span class="code-func">def</span> extract(self):
-				<span class="py-method">if</span> self.source_type == <span class="code-text">'csv'</span>:
-					<span class="py-method">return</span> self._extract_csv()
-				<span class="py-method">elif</span> self.source_type == <span class="code-text">'api'</span>:
-					<span class="py-method">return</span> self._extract_api()
-				<span class="py-method">elif</span> self.source_type == <span class="code-text">'database'</span>:
-					<span class="py-method">return</span> self._extract_database()
+			<span class="code-text">"""Source Selector"""</span>
+			<span class="code-func">def</span> extract(<span class="code-func">self</span>):
+				<span class="py-method">if</span> <span class="code-func">self</span>.data_source == <span class="code-text">'postgresql'</span>:
+					<span class="py-method">return</span> self.postgresql()
+				<span class="py-method">elif</span> <span class="code-func">self</span>.data_source == <span class="code-text">'mysql'</span>:
+					<span class="py-method">return</span> <span class="code-func">self</span>.mysql()
+				<span class="py-method">elif</span> <span class="code-func">self</span>.data_source == <span class="code-text">'api'</span>:
+					<span class="py-method">return</span> <span class="code-func">self</span>.api()
+				<span class="py-method">elif</span> <span class="code-func">self</span>.data_source == <span class="code-text">'csv'</span>:
+					<span class="py-method">return</span> <span class="code-func">self</span>.csv()
 				<span class="py-method">else</span>:
 				<span class="py-method">raise</span> <span class="code-func">ValueError</span> (
-					f<span class="code-text">"Unsupported source type:</span> {self.source_type}<span class="code-text">"</span>)
-			
-			<span class="code-text">"""csv extractor"""</span>
-			<span class="code-func">def</span> _extract_csv(self):
-				filepath = self.config.get(<span class="code-text">'filepath'</span>)
-				df = pd.read_csv(filepath)
-				<span class="py-method">print</span>(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from CSV."</span>)
-				<span class="py-method">return</span> df
+					f<span class="code-text">"Unsupported source type:</span> {<span class="code-func">self</span>.source_type}<span class="code-text">"</span>)
+			<!-- postgresql -->
+			<span class="code-text">"""postgresql extractor"""</span>
+			<span class="code-func">def</span> postgresql(<span class="code-func">self</span>):
+				connection_string = <span class="code-func">self</span>.config.get(<span class="code-text">'connection_string'</span>)
+				extract_query = <span class="code-func">self</span>.config.get(<span class="code-text">'extract_query'</span>)
+				engine = sqlalchemy.create_engine(connection_string)
 
+				df = pd.read_sql_query(extract_query, engine)
+				<span class="py-method">print</span>(f <span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from Database."</span>)
+				<span class="py-method">return</span> df
+			<!-- mysql -->
+			<span class="code-text">"""mysql extractor"""</span>
+			<span class="code-func">def</span> mysql(<span class="code-func">self</span>):
+				connection_string = <span class="code-func">self</span>.config.get(<span class="code-text">'connection_string'</span>)
+				table_query = <span class="code-func">self</span>.config.get(<span class="code-text">'table_query'</span>)
+				extract_query = <span class="code-func">self</span>.config.get(<span class="code-text">'extract_query'</span>)
+				cursor = connection_string.cursor()
+
+				<span class="code-text">"""get list of tables"""</span>
+				cursor.execute(table_query)
+				tbls = [x[0] <span class="py-method">for</span> x in cursor.fetchall()]
+
+				<span class="py-method">for</span> tbl in tbls:
+				df = pd.read_sql(extract_query, connection_string)
+			<!-- api extractor -->
 			<span class="code-text">"""api extractor"""</span>
-			<span class="code-func">def</span> _extract_api(self):
-				url = self.config.get(<span class="code-text">'url'</span>)
+			<span class="code-func">def</span> api(<span class="code-func">self</span>):
+				url = <span class="code-func">self</span>.config.get(<span class="code-text">'url'</span>)
 				response = requests.get(url)
 				data = response.json()
 				df = pd.json_normalize(data)
 				<span class="py-method">print</span>(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from API."</span>)
 				<span class="py-method">return</span> df
-
-			<span class="code-text">"""database extractor"""</span>
-			<span class="code-func">def</span> _extract_database(self):
-				connection_string = self.config.get(<span class="code-text">'connection_string'</span>)
-				table_query = self.config.get(<span class="code-text">'table_query'</span>)
-				extract_query = self.config.get(<span class="code-text">'extract_query'</span>)
-				engine = sqlalchemy.create_engine(connection_string)
-
-				<span class="code-text">"""get list of tables"""</span>
-				cursor.execute(table_query)
-				tbls = [x[0] for x in cursor.fetchall()]
-
-				for tbl in tbls:
-				df = pd.read_sql(extract_query, conn)
-
-				<span class="code-text">"""alternative"""</span>
-				df = pd.read_sql_query(extract_query, engine)
-				<span class="py-method">print</span>(f <span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from Database."</span>)
+			<!-- csv extractor -->
+			<span class="code-text">"""csv extractor"""</span>
+			<span class="code-func">def</span> csv(<span class="code-func">self</span>):
+				filepath = <span class="code-func">self</span>.config.get(<span class="code-text">'filepath'</span>)
+				df = pd.read_csv(filepath)
+				<span class="py-method">print</span>(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from CSV."</span>)
 				<span class="py-method">return</span> df
 										</code>
 									</pre>
@@ -253,29 +266,44 @@
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment">LOAD CLASS</span>
 		<span class="code-func">class</span> Loader:
-		<span class="code-func">def</span> __init__(self, destination_type, config):
-			self.destination_type = destination_type
-			self.config = config
+		<span class="code-func">def</span> __init__(<span class="code-func">self, destination, config</span>):
+			<span class="code-func">self</span>.destination = destination
+			<span class="code-func">self</span>.config = config
 
 		<span class="code-text">"""Target Selector"""</span>
-		<span class="code-func">def</span> load(self, df):
-			<span class="py-method">if</span> self.destination_type == <span class="code-text">'database'</span>:
-				<span class="py-method">return</span> self._load_database(df)
-			<span class="py-method">elif</span> self.destination_type == <span class="code-text">'csv'</span>:
-				<span class="py-method">return</span> self._load_csv(df)
+		<span class="code-func">def</span> load(<span class="code-func">self, df</span>):
+			<span class="py-method">if</span> <span class="code-func">self</span>.destination == <span class="code-text">'bigquery'</span>:
+				<span class="py-method">return</span> <span class="code-func">self</span>.bigquery(df)
+			<span class="py-method">elif</span> <span class="code-func">self</span>.destination == <span class="code-text">'redshift'</span>:
+				<span class="py-method">return</span> <span class="code-func">self</span>.redshift(df)
+			<span class="py-method">elif</span> <span class="code-func">self</span>.destination == <span class="code-text">'snowflake'</span>:
+				<span class="py-method">return</span> <span class="code-func">self</span>.redshift(df)
+			<span class="py-method">elif</span> <span class="code-func">self</span>.destination == <span class="code-text">'s3'</span>:
+				<span class="py-method">return</span> <span class="code-func">self</span>.s3(df)
 			<span class="py-method">else</span>:
-			<span class="py-method">raise</span> <span class="code-func">ValueError</span> (f<span class="code-text">"Unsupported destination type:</span> {self.destination_type}<span class="code-text">"</span>)
-
-		<span class="code-text">"""database | data warehouse loader"""</span>
-		<span class="code-func">def</span> _load_database(self, df):
-			connection_string = self.config.get(<span class="code-text">'connection_string'</span>)
-			table_name = self.config.get(<span class="code-text">'table_name'</span>)
+			<span class="py-method">raise</span> <span class="code-func">ValueError</span> (f<span class="code-text">"Unsupported destination type:</span> {<span class="code-func">self</span>.destination}<span class="code-text">"</span>)
+		<!-- bigquery -->
+		<span class="code-text">"""bigquery"""</span>
+		<span class="code-func">def</span> bigquery(<span class="code-func">self, df</span>):
+			connection_string = <span class="code-func">self</span>.config.get(<span class="code-text">'connection_string'</span>)
+			table_name = <span class="code-func">self</span>.config.get(<span class="code-text">'table_name'</span>)
 			engine = sqlalchemy.create_engine(connection_string)
 			df.to_sql(table_name, engine, if_exists=<span class="code-text">'append'</span>, index=False)
 			<span class="py-method">print</span>(f<span class="code-text">"Loaded {len(df)} records into database table </span>'{table_name}'<span class="code-text">." </span>)
 			<span class="py-method">return</span>
+			<!-- redshift -->
+		<span class="code-text">"""redshift"""</span>
+		<span class="code-func">def</span> redshift(<span class="code-func">self, df</span>):
+			<span class="py-method">pass</span>
+		<!-- snowflake -->
+		<span class="code-text">"""snowflake"""</span>
+		<span class="code-func">def</span> snowflake(<span class="code-func">self, df</span>):
+			<span class="py-method">pass</span>
+		<!-- s3 -->
+		<span class="code-text">"""s3"""</span>
+		<span class="code-func">def</span> s3(<span class="code-func">self, df</span>):
+			<span class="py-method">pass</span>
 
 		<span class="code-text">"""csv loader"""</span>
 		<span class="code-func">def</span> _load_csv(self, df):
