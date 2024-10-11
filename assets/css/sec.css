@@ -85,7 +85,7 @@ pre {
 }
 
 .paragraph {
-    font-size: 19px;
+    font-size: 20px;
     color: #2e2e2e;
     width: 70%;
     margin: 0 auto;
@@ -100,12 +100,13 @@ pre {
     color:#077ae6
 }
 .heading_five {
-    color: #4b4a4a;
+    color: #7e7e7e;
     text-align:center;
-    margin-top: 20px;
     font-weight: 500;
-}
-
-.other_heading {
-    
+    font-size: 24px;
+    margin: 0;
+    padding: 0;
+    text-decoration: .05rem underline;
+    text-underline-offset: .2rem;
+    margin-top: 70px;
 }

@@ -194,7 +194,7 @@
 					<span class="py-method">return</span> <span class="code-func">self</span>.csv()
 				<span class="py-method">else</span>:
 				<span class="py-method">raise</span> <span class="code-func">ValueError</span> (
-					f<span class="code-text">"Unsupported source type:</span> {<span class="code-func">self</span>.source_type}<span class="code-text">"</span>)
+					f<span class="code-text">"Unsupported data_source:</span> {<span class="code-func">self</span>.data_source}<span class="code-text">"</span>)
 			<!-- postgresql -->
 			<span class="code-text">"""postgresql extractor"""</span>
 			<span class="code-func">def</span> postgresql(<span class="code-func">self</span>):
@@ -203,7 +203,7 @@
 				engine = sqlalchemy.create_engine(connection_string)
 
 				df = pd.read_sql_query(extract_query, engine)
-				<span class="py-method">print</span>(f <span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from Database."</span>)
+				<span class="py-method">print</span>(f <span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from postgresql."</span>)
 				<span class="py-method">return</span> df
 			<!-- mysql -->
 			<span class="code-text">"""mysql extractor"""</span>
@@ -243,9 +243,8 @@
 
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		<span class="code-comment">transform class</span>
 		<span class="code-func">class</span> Transformer:
-		<span class="code-func">def</span> __init__(self, transformation_functions=None):
+		<span class="code-func">def</span> __init__(<span class="code-func">self, transformation_functions=None</span>):
 			<span class="code-text">
 			"""
 			transformation_functions: List of functions to apply to the dataframe
@@ -253,8 +252,8 @@
 			self.transformation_functions = transformation_functions or []
 			</span> 
 
-		<span class="code-func">def</span> transform(self, df):
-			for func in self.transformation_functions:
+		<span class="code-func">def</span> transform(<span class="code-func">self, df</span>):
+			<span class="py-mrthod">for</span> func in self.transformation_functions:
 				df = func(df)
 			<span class="py-method">print</span>(<span class="code-text">"transformation complete."</span> )
 			<span class="py-method">return</span> df
@@ -282,7 +281,7 @@
 			<span class="py-method">elif</span> <span class="code-func">self</span>.destination == <span class="code-text">'s3'</span>:
 				<span class="py-method">return</span> <span class="code-func">self</span>.s3(df)
 			<span class="py-method">else</span>:
-			<span class="py-method">raise</span> <span class="code-func">ValueError</span> (f<span class="code-text">"Unsupported destination type:</span> {<span class="code-func">self</span>.destination}<span class="code-text">"</span>)
+			<span class="py-method">raise</span> <span class="code-func">ValueError</span> (f<span class="code-text">"Unsupported destination:</span> {<span class="code-func">self</span>.destination}<span class="code-text">"</span>)
 		<!-- bigquery -->
 		<span class="code-text">"""bigquery"""</span>
 		<span class="code-func">def</span> bigquery(<span class="code-func">self, df</span>):
@@ -316,11 +315,15 @@
 									</pre>
 									
 									<!-- PUTTING THE PIECES TOGETHER -->
-									<h5 class="heading_five">Putting the Pieces Together</h5>
+									<h5 class="heading_five">Putting the Pieces Together <br>main.py</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
+		<span class="py-method">from</span> extract.extract <span class="py-method">import</span> Extractor
+		<span class="py-method">from</span> config.config <span class="py-method">import</span> postgresql
+		<span class="py-method">from</span> load.load <span class="py-method">import</span> Loader
+
 		<span class="code-comment"># Create Extractor</span>
-		extractor = Extractor(source_type=<span class="code-text">'database'</span>, config=extract_config)
+		extractor = Extractor(source_type=<span class="code-text">'postgresql'</span>, config=postgresql_config)
 
 		<span class="code-comment"># Create Transformer with defined transformation functions</span>
 		transformer = Transformer(transformation_functions=[
@@ -330,7 +333,7 @@
 		])
 
 		<span class="code-comment"># Create Loader</span>
-		loader = Loader(destination_type='database', config=load_config)
+		loader = Loader(destination=<span class="code-text">'bigquery'</span>, config=bigquery_config)
 
 		<span class="code-comment"># Create ETLPipeline</span>
 		etl_pipeline = ETLPipeline(extractor, transformer, loader)
@@ -342,7 +345,7 @@
 
 
 									<!-- ORCHESTRATION IN AIRFLOW -->
-									<h5 class="heading_five">dag/ <br>Airflow ETL/ELT Workflow</h5>
+									<h5 class="heading_five">dag/ <br>Airflow Workflow</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
@@ -415,7 +418,7 @@
 
 
 									<h5 class="heading_five">Orchestration <br> Apache Airflow</h5>
-									<a href="images/VIII.png" target="_blank"><img class="image" src="images/orchestration_airflow.png" alt="" /></a>
+									<a href="images/VIII.png" target="_blank"><img class="image" src="images/orchestration_airflow.png" alt=""/></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
 									<a href="images/load.png" target="_blank"><img class="image" src="images/load.png" alt="" /></a>
 
