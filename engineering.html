@@ -256,6 +256,7 @@
 		class ETLPipeline:
 		def __init__(self, extractor, transformer, loader):
 			<span class="code-text">
+			<span class="code-text">
 			"""
 			Initializes the ETLPipeline with Extractor, Transformer, and Loader instances.
 			
@@ -264,14 +265,18 @@
 			:param loader: An instance of the Loader class.
 			"""
 			</span> 
+			</span> 
 				self.extractor = extractor
 				self.transformer = transformer
 				self.loader = loader
 
 		def run(self):
+				<span class="code-text">
 				"""
-				Executes the ETL pipeline: Extracts data, transforms it, and loads it into the destination.
+				Executes the ETL pipeline: <br>
+				Extracts data, transforms it, and loads it into the destination.
 				"""
+				</span> 
 				print("Starting ETL Pipeline...")
 				try:
 						data = self.extractor.extract()
@@ -316,9 +321,10 @@
 												</code>
 											</pre>
 
-									<!-- <h3 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 300;" id="content">Airflow Weberver UI</h3>
+									<h3 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 300;" id="content">Airflow Weberver UI</h3>
 									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
-									<h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Five Key Questions</h4>
+
+									<!-- <h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Five Key Questions</h4>
 									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">Now that Airflow is up and running, it's crucial to address several key questions to ensure success of our project. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. <br>
 									</p>  -->
 
