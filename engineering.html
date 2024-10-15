@@ -74,13 +74,13 @@
 									<h5 class="heading_five">Create & set user Permissions in PostgreSQL</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-		1. Connect to PostgreSQL
-		sudo -u postgres psql
-		2. Create ETL/ELT User
-		CREATE USER etl_b085954 WITH PASSWORD '@Brian';
-		3. Grant Permissions
-		GRANT USAGE ON SCHEMA operations TO etl_b085954;
-		GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
+		<span class="code-comment">1. Connect to PostgreSQL</span>
+		$ sudo -u postgres psql
+		<span class="code-comment">2. Create ETL/ELT User</span>
+		$ CREATE USER etl_b085954 WITH PASSWORD '@Brian';
+		<span class="code-comment">3. Grant Permissions</span>
+		$ GRANT USAGE ON SCHEMA operations TO etl_b085954;
+		$ GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
 										</code>
 									</pre>
 
