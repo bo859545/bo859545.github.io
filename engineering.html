@@ -89,20 +89,55 @@
 									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.</p>
 									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 405px; width: 780px;" src="images/structure_i.png"/></a>
 
+							
 
-									<!-- <div class="ident_paragraph">
-										<p>
-											<span class="text-bold">Config:</span> database connections and other configurations. <br> 
-											<span class="text-bold">Extractor:</span> handle data extraction from PostgreSQL. <br>
-											<span class="text-bold">Loader:</span> loading data into the target system. <br>
-											<span class="text-bold">Transformer:</span> apply necessary transformations to the data. <br>
-											<span class="text-bold">Pipeline:</span> Orchestrate the entire pipeline process. <br>
-										</p>
-									</div> -->
+									<!-- configuration/ -->
+									<h5 class="heading_five">config.py</h5>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="code-func">postgres:</span>
+			host: <span class="code-text">"localhost"</span>
+			port: 5432
+			database: <span class="code-text">"postgres"</span>
+			user: <span class="code-text">"b085954"</span>
+			password: <span class="code-text">"@Brian"</span>
+			query: "SELECT * FROM sales"
 
+		<span class="code-func">bigquery:</span>
+			project_id: <spam class="code-text">"adventureworks-431609"</spam>
+			dataset_id: <span class="code-text">"adw"</span>
+			table_id: <span class="code-text">"your_table"</span> 
+			credentials_json: <span class="code-text">"path/to/your/credentials.json"</span>
+
+		<span class="code-func">logging:</span>
+			level: <span class="code-text">"INFO"</span>
+			format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+			file: <span class="code-text">"pipeline.log"</span>
+										</code>
+									</pre>
+
+									<!-- requirements.txt/ -->
+									<h5 class="heading_five">requirements.txt</h5>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		pandas
+		requests
+		sqlalchemy
+		logging
+		yaml
+										</code>
+									</pre>
+
+									<!-- Installing requirenet.txt -->
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="code-comment">Installing requirements.txt</span> 
+		pip install -r requirements.txt
+										</code>
+									</pre>
+									 
+									 <!-- extract/ -->
 									<h5 class="heading_five">extract/extract.py</h5>
-
-									<!-- extract/ -->
 									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">
 												<span class="code-func">a. The Extractor class:</span> <br> 
 												This class will accept a <span class="code-func">data_source</span> parameter that tells the Extractor where the data is coming from. <br>
