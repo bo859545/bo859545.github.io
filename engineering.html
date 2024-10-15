@@ -63,21 +63,48 @@
 										
 									</header>
 
-									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">I'll leverage a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation and <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span> for production to efficiently move data from a <span class="highlight">PostgreSQL</span> database to BigQuery for analytical processing.
+									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">I'll leverage a combination of <span class="highlight">Python</span> for writing elt/etl scripts, <span class="highlight">Apache Airflow</span> for orchestration, <span class="highlight">BigQuery</span>, <span class="highlight">Snowflake</span>, <span class="highlight">AWS Redshift</span> for storage, <span class="highlight">dbt</span> for transformation & <span class="highlight">Amazon Managed Workflow for Apache Airiflow</span> to efficiently move data from a <span class="highlight">PostgreSQL</span> database to BigQuery for analytical processing.<br>
 									</p>
 
 									<!-- Content -->
-										<!-- Python Classes -->
-									<h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Python Classes</h4>
+									<!-- Where is the data? -->
+									<h5 class="heading_five" style="margin-bottom: 2rem;">Where is the Data? <br>PostgreSQL Database</h5>
+									<a href="images/postgresql.png" target="_blank"><img class="image" src="images/postgresql.png"/></a>
+
+									<h5 class="heading_five">Create & set user Permissions in PostgreSQL</h5>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		1. Connect to PostgreSQL
+		sudo -u postgres psql
+		2. Create ETL/ELT User
+		CREATE USER etl_b085954 WITH PASSWORD '@Brian';
+		3. Grant Permissions
+		GRANT USAGE ON SCHEMA operations TO etl_b085954;
+		GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
+										</code>
+									</pre>
+
+									<!-- Python Classes -->
+									<h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Pipeline Design</h4>
 									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.</p>
-									<!-- <h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Project Structure</h4> -->
-									<!-- <a href="images/file_structure.png" target="_blank"><img class="image"src="images/file_structure.png" alt=""/></a> -->
-									<h5 class="heading_five">extract/</h5>
+
+
+									<!-- <div class="ident_paragraph">
+										<p>
+											<span class="text-bold">Config:</span> database connections and other configurations. <br> 
+											<span class="text-bold">Extractor:</span> handle data extraction from PostgreSQL. <br>
+											<span class="text-bold">Loader:</span> loading data into the target system. <br>
+											<span class="text-bold">Transformer:</span> apply necessary transformations to the data. <br>
+											<span class="text-bold">Pipeline:</span> Orchestrate the entire pipeline process. <br>
+										</p>
+									</div> -->
+
+									<h5 class="heading_five">extract/extract.py</h5>
 
 									<!-- extract/ -->
 									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">
 												<span class="code-func">a. The Extractor class:</span> <br> 
-												The class will accept a <span class="code-func">data_source</span> parameter that tells the Extractor where the data is coming from. <br>
+												This class will accept a <span class="code-func">data_source</span> parameter that tells the Extractor where the data is coming from. <br>
 												The <span class="code-func">extract()</span> method will decide which specific extraction method to call based on <span class="code-func">data_source</span>. <br>
 												The extraction options will be private methods - <span class="code-func">postgresql(), mysql(), api(), csv()</span>. <br>
 									</p>
@@ -233,7 +260,6 @@
 										</code>
 									</pre>
 
-
 									<!-- PIPELINE -->
 									<h5 class="heading_five">pipeline/</h5>
 									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">
@@ -256,7 +282,6 @@
 		class ETLPipeline:
 		def __init__(self, extractor, transformer, loader):
 			<span class="code-text">
-			<span class="code-text">
 			"""
 			Initializes the ETLPipeline with Extractor, Transformer, and Loader instances.
 			
@@ -264,7 +289,6 @@
 			:param transformer: An instance of the Transformer class.
 			:param loader: An instance of the Loader class.
 			"""
-			</span> 
 			</span> 
 				self.extractor = extractor
 				self.transformer = transformer
@@ -286,16 +310,8 @@
 				except Exception as e:
 						print(f"ETL Pipeline failed: {e}")
 						raise
-
-
-	
 										</code>
 									</pre>
-
-
-									
-
-
 
 									<h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Apache Airflow - Set Up</h4>
 									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">I'll kick off the project by installing a local instance of Apache Airflow on Linux a machine via the Terminal, once Airflow Webserver and Scheduler are up and running, I'll proceed to install required dependencies for the project.</p>
@@ -322,7 +338,7 @@
 											</pre>
 
 									<h3 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 300;" id="content">Airflow Weberver UI</h3>
-									<a href="images/ingestion.png" target="_blank"><img class="image" src="images/Pasted image (2).png"/></a>
+								99999
 
 									<!-- <h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Five Key Questions</h4>
 									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">Now that Airflow is up and running, it's crucial to address several key questions to ensure success of our project. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. <br>
@@ -464,15 +480,10 @@
 										</code>
 									</pre>
 
-
-
 									<h5 class="heading_five">Orchestration <br> Apache Airflow</h5>
 									<a href="images/VIII.png" target="_blank"><img class="image" src="images/orchestration_airflow.png" alt=""/></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
 									<a href="images/load.png" target="_blank"><img class="image" src="images/load.png" alt="" /></a>
-
-									<!-- <h4 style="color: #949494; text-align:center; margin-top: 70px; margin-bottom: 0;" id="content">Running dbt Models</h4> -->
-									<!-- <a href="images/XIII.png" target="_blank"><img class="image" src="images/XIII.png" alt="" /></a> -->
 								
 					</div>
 

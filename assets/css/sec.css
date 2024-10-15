@@ -27,6 +27,7 @@ pre {
     margin-left: auto;
     margin-right: auto;
     width: 70%;
+    image-resolution: from-image;
 }
 
 .tertiary-nav {
@@ -66,7 +67,7 @@ pre {
     margin-left: auto;
     margin-right: auto;
     width: 75%;
-    background-color: #f2f2f2;
+    background-color: #e0bfbf;
     color: black;
     border-radius: 4px;
     margin-top: 40px;
@@ -109,4 +110,13 @@ pre {
     text-decoration: .05rem underline;
     text-underline-offset: .2rem;
     margin-top: 40px;
+}
+
+.ident_paragraph {
+    color: #545454;
+    width: 70%;
+    margin: 20px auto;
+    text-align: justify;
+    font-size: 19px;
+    padding-left: 40rems;
 }
