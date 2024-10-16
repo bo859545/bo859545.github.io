@@ -130,6 +130,7 @@
 		sqlalchemy ==  2.0.36
 		logging
 		yaml
+		os
 										</code>
 									</pre>
 
@@ -203,7 +204,6 @@
 					<span class="py-method">except:</span> yaml.YAMLError as exc:
 						<span class="py-method">raise:</span> Exception(f"Error parsing YAML file: {exc}")
 				<span class="py-method">return</span> config
-					
 
 			<span class="code-func">def</span> <span class="brown-highlight">get_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
 				<span class="py-method">return</span> <span class="py-method">self</span>.config
@@ -328,74 +328,6 @@
 
 									<h3 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 300;" id="content">Airflow Weberver UI</h3>
 									<a href="images/airflow.png" target="_blank"><img class="image" src="images/airflow.png" alt="" /></a>
-
-									<!-- <h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Five Key Questions</h4>
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">Now that Airflow is up and running, it's crucial to address several key questions to ensure success of our project. These questions help clarify the scope, requirements, and challenges associated with building and maintaining scalable pipelines. <br>
-									</p>  -->
-
-									<!-- <pre style="color: #545454; font-size: 16px;">
-						I. Where is our data?  <span class="highlight">Source</span>
-						II. Where do we consolidate our data? <span class="highlight">Storage</span>
-						III. How will we get it there? <span class="highlight">Ingestion</span>
-						IV. How will we clean it up? <span class="highlight">Transformation</span>
-						V. How will we analyze it? <span class="highlight">Reporting</span>
-									</pre> -->
-
-									<!-- <a href="images/source_postgresql.png" target="_blank"><img class="image"src="images/source_postgresql.png" alt=""/></a>
-									<a href="images/destination_bigquery.png" target="_blank"><img class="image" src="images/destination_bigquery.png" alt="" /></a> -->
-
-									
-									<!-- <h4 style="color: #3f3f3f; text-align:center; margin-top: 40px; font-weight: 500;" id="content">Project's Structure</h4>
-									<p class="paragraph">Using object-oriented programming (OOP) with Python classes can help structure the processes in a modular, reusable, and maintainable way. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.
-									</p> -->
-
-									<!-- <p class="paragraph">I'll create separate classes for each ETL step: Extractor, Transformer, and Loader. Additionally, we'll have an ETLPipeline class to orchestrate these steps.
-									</p> -->
-
-									<!-- <p class="paragraph">
-										<span class="text-bold">config/</span> - Configuration files, such as environment variables, database connections, and credentials. <br>
-										<span class="text-bold">dags/</span> - For Airflow-based projects, this directory contains the DAGs defining your ETL workflow. <br>
-										<span class="text-bold">extract/</span> - Contains scripts for extracting data from various sources (databases, APIs, flat files, etc.). <br>
-										<spam class="text-bold">transform/</spam> - Transformation logic is applied here, e.g., data cleaning, formatting, normalization, or aggregation. <br>
-										<span class="text-bold">load/</span> - Loading scripts to push the transformed data into the final destination (data warehouse, databases). <br>
-										<span class="text-bold">utils/</span> - Utility scripts such as common functions for error handling, logging, or reusable snippets. <br>
-										<span class="text-bold">logs/</span> - Centralized directory for log files to monitor your ETL runs. You may want to separate logs by date or pipeline. <br>
-										<span class="text-bold">tests/</span> - Unit and integration tests to ensure each component works as expected. <br>
-										<span class="text-bold">data/</span> - A directory to temporarily store input or output data files (e.g., CSVs, JSONs) before or after processing. <br>
-										<span class="text-bold">docs/</span> - Documentation for the ETL process. This could include setup instructions, data flow diagrams, or API documentation. <br>
-									</p> -->
-
-										<!-- CONFIGURATION CLASS-->
-										<h5 class="heading_five">config/</h5>
-
-										<pre class="py-code">
-											<code>
-	<spam class="code-comment"># config/</spam>
-
-	<span class="code-text">"""Source Configuration"""</span>
-	postgresql_config = {
-		'connection_string' : <span class="code-text">'postgresql://bo859545:p*ssword@localhost:5432/adw_db'</span>
-		'tbl_names' : [<span class="code-text">'customer','product','product_category',
-				'product_subcategory', 'returns', 'sales',
-				'territory'</span>],
-		'table_query' : f<span class="code-text">"""SELECT table_name FROM information_schema.tables
-				   WHERE table_schema = 'public'"""</span>,
-					 
-		'extract_query' : f<span class="code-text">"""SELECT * FROM {tbl} WHERE updated_at >= {ds}"</span> 
-	}
-
-	<span class="code-text">"""Target Configuration"""</span>
-	bigquery_config = {
-		client = bigquery.Client()
-		job_config = bigquery.LoadJobConfig(
-		write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
-	}
-
-	csv.config = {
-		filepath = 'filepath'
-	}
-										</code>
-									</pre>
 
 									
 									<!-- ORCHESTRATION IN AIRFLOW -->
