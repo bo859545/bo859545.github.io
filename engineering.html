@@ -92,7 +92,7 @@
 									<!-- Python Classes -->
 									<h4 style="color: #3f3f3f; text-align:center; margin-top: 4rem; font-weight: 500;" id="content">Pipeline Design</h4>
 									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.</p>
-									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 405px; width: 780px;" src="images/structure_i.png"/></a>
+									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 446px; width: 915px;" src="images/structure_i.png"/></a>
 
 									<!-- configuration/ -->
 									<h5 class="heading_five">config.py</h5>
@@ -101,7 +101,7 @@
 		<span class="code-func">postgres:</span>
 			type: <span class="code-text">"postgresql"</span>
 			host: <span class="code-text">"localhost"</span>
-			port: 5432
+			port: <span class="brown-highlight">5432</span>
 			database: <span class="code-text">"postgres"</span>
 			user: <span class="code-text">"b085954"</span>
 			password: <span class="code-text">"@Brian"</span>
@@ -115,8 +115,9 @@
 
 		<span class="code-func">logging:</span>
 			level: <span class="code-text">"INFO"</span>
-			format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+			format: <span class="brown-highlight">"%(asctime)s - %(name)s - %(levelname)s - %(message)s"</span>
 			file: <span class="code-text">"pipeline.log"</span>
+			filemode: <span class="code-text">"a"</span>
 										</code>
 									</pre>
 
@@ -179,7 +180,14 @@
 		<span class="py-method">import</span>  yaml
 		<span class="code-func">class</span> ConfigLoader:
 		
-			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="py-method">self</span> , config_path=<span class="code-text">'config.yaml'</span>) -> <span class="py-method"> None:</span>
+			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="py-method">self</span> , config_path=<span class="code-text">'config.yaml'</span>) -> <span class="py-method"> Dict:</span>
+			<span class="code-text">
+			"""
+			Loads configuration from a YAML file.
+			:param file_path: Path to the YAML configuration file
+			:return: Configuration dictionary
+			"""
+			</span>
 				<span class="py-method">self</span>.config_path = config_path
 				<span class="py-method">self</span>.config = <span class="py-method">self</span>.load_config()
 
