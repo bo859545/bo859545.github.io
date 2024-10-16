@@ -179,22 +179,31 @@
 										<code style="margin: 0; padding: 0;">
 		<span class="py-method">import</span>  yaml
 		<span class="code-func">class</span> ConfigLoader:
-		
 			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="py-method">self</span> , config_path=<span class="code-text">'config.yaml'</span>) -> <span class="py-method"> Dict:</span>
-			<span class="code-text">
-			"""
-			Loads configuration from a YAML file.
-			:param file_path: Path to the YAML configuration file
-			:return: Configuration dictionary
-			"""
-			</span>
 				<span class="py-method">self</span>.config_path = config_path
 				<span class="py-method">self</span>.config = <span class="py-method">self</span>.load_config()
 
 			<span class="code-func">def</span> <span class="brown-highlight">load_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
-				<span class="py-method">with</span> open(self.config_path, <span class="code-text">'r'</span>) as file:
-					config = yaml.safe_load(file)
-					<span class="py-method">return</span> config
+			<span class="code-text">
+			"""
+			:loads configuration from a YAML file.
+			:param file_path: Path to the YAML configuration file
+			:return: Configuration dictionary
+			:raises FileNotFoundError: If the configuration file is not found
+			:raises yaml.YAMLError: If there's an issue parsing the YAML file
+			"""
+		</span>
+				<span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(file_path):
+					raise FileNotFoundError(
+						f<span class="code-text">"Configuration file '{file_path}' not found."</span>)
+
+				<span class="py-method">with</span> open(<span class="py-method">self</span>.config_path, <span class="code-text">'r'</span>) as file:
+					<span class="py-method">try:</span>
+						config = yaml.safe_load(file)
+					<span class="py-method">except:</span> yaml.YAMLError as exc:
+						<span class="py-method">raise:</span> Exception(f"Error parsing YAML file: {exc}")
+				<span class="py-method">return</span> config
+					
 
 			<span class="code-func">def</span> <span class="brown-highlight">get_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
 				<span class="py-method">return</span> <span class="py-method">self</span>.config
