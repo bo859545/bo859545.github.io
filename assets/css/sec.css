@@ -120,3 +120,7 @@ pre {
     font-size: 19px;
     padding-left: 40rems;
 }
+
+.brown-highlight {
+    color: #c7934e;
+}
