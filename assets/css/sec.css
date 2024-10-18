@@ -83,14 +83,16 @@ pre {
 .highlight {
     color: #077ae6;
     text-decoration: underline;
+    text-underline-offset: .2rem;
 }
 
 .paragraph {
     font-size: 20px;
-    color: #2e2e2e;
+    color: #5c5c5c;
     width: 70%;
     margin: 0 auto;
     margin-top: 10px;
+    text-align: center;
 }
 
 .text-bold {
@@ -107,8 +109,8 @@ pre {
     font-size: 24px;
     margin: 0;
     padding: 0;
-    text-decoration: .05rem underline;
-    text-underline-offset: .2rem;
+    /* text-decoration: .05rem underline;
+    text-underline-offset: .2rem; */
     margin-top: 40px;
 }
 

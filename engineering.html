@@ -71,6 +71,17 @@
 									<h5 class="heading_five" style="margin-bottom: 2rem;">Where is the Data? <br>PostgreSQL Database</h5>
 									<a href="images/postgresql.png" target="_blank"><img class="image" src="images/postgresql.png"/></a>
 
+									<!-- Where do we consolidate the data? -->
+									<h5 class="heading_five" style="margin-bottom: 2rem;">Where do we consolidate the data?<br>Google BigQuery</h5>
+									<a href="images/target_bigquery.png" target="_blank"><img class="image" src="images/target_bigquery.png"/></a>
+
+									<!-- Python Classes -->
+									<h4 class="heading_five">Pipeline Design</h4>
+									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members. Ill be usin pyton classes to break te pipeline te components into manaeable tasks.</p>
+									<!-- <a href="images/vscode.png" target="_blank"><img class="image" style="margin-bottom: 5rem; margin-top: 3rem;" src="images/vscode.png"/></a> -->
+									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 446px; width: 915px;" src="images/structure_i.png"/></a>
+
+									<!-- Create & set user permissions in PostgreSQL -->
 									<h5 class="heading_five">Create & set user permissions in PostgreSQL</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
@@ -83,19 +94,10 @@
 		$ GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
 										</code>
 									</pre>
-
-									<!-- Where do we consolidate the data? -->
-									<h5 class="heading_five" style="margin-bottom: 2rem;">Where do we consolidate the data?<br>Google BigQuery</h5>
-									<a href="images/target_bigquery.png" target="_blank"><img class="image" src="images/target_bigquery.png"/></a>
-
-
-									<!-- Python Classes -->
-									<h4 style="color: #3f3f3f; text-align:center; margin-top: 4rem; font-weight: 500;" id="content">Pipeline Design</h4>
-									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.</p>
-									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 446px; width: 915px;" src="images/structure_i.png"/></a>
-
+									
 									<!-- configuration/ -->
-									<h5 class="heading_five">config.py</h5>
+									<h5 class="heading_five">config.yaml</h5>
+									<p class="paragraph">yaml configuration file for PostgreSQL & BigQuery connections, logging,  & other settings.</p>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-func">postgres:</span>
@@ -123,14 +125,16 @@
 
 									<!-- requirements.txt/ -->
 									<h5 class="heading_five">requirements.txt</h5>
+									<p class="paragraph">list of dependencies & version to be installed</p>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		pandas => 2.2.3 
 		requests
 		sqlalchemy ==  2.0.36
 		logging
-		yaml
+		pyyaml
 		os
+		google-cloud-bigquery
 										</code>
 									</pre>
 
@@ -142,8 +146,28 @@
 										</code>
 									</pre>
 
+									<!-- BASE CLASS -->
+									<h5 class="heading_five">extract/base.py</h5>
+									<pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="py-method">from</span> abc <span class="py-method">import</span> ABC, abstractmethod
+		<span class="py-method">from</span> pandas <span class="py-method">as</span> pd
+
+		<span class="code-func">class</span> <span class="brown-highlight">BaseExtractor</span>(ABC) -> <span class="py-method">None:</span>
+
+			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="code-func">self</span> , config, logger):
+			<span class="code-func">self</span>.config = config
+			<span class="code-func">self</span>.logger = logger
+
+				<span class="brown-highlight">@abstractmethod</span>
+				<span class="code-func">def</span> <span class="brown-highlight">extract</span>(<span class="code-func">self</span>) -> <span class="py-method">pd.DataFrame:</span>
+					<span class="py-method">pass</span>
+										</code>
+									</pre>
+
 									<!-- extract/postresql.py -->
 									<h5 class="heading_five">extract/postresql.py</h5>
+									<p class="paragraph">.py script handles extraction from PostgreSQL database</p>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 	<span class="py-method">from</span> pipeline.Base <span class="py-method">import</span> BaseExtractor
@@ -152,7 +176,7 @@
 
 	<span class="code-func">class</span> <span class="brown-highlight">PostgreSQL</span> (BaseExtractor):
 
-		<span class="code-func">def</span> <span class="brown-highlights">extract</span>(self) -> <span class="py-method">pd.DataFrame:</span> 
+		<span class="code-func">def</span> <span class="brown-highlights"> <span class="brown-highlight">extract</span></span>(<span class="code-func">self</span>) -> <span class="py-method">pd.DataFrame:</span> 
 			db_config = <span class="py-method">self</span>.config[<span class="code-text">'postgres'</span>]
 			<span class="py-method">try:</span> 
 				engine_url =
@@ -163,23 +187,25 @@
 				</span> 
 				engine = create_engine(engine_url):
 				<span class="py-method">self</span>.logger.info(<span class="code-text">"Connecting to PostgreSQL database...</span>")
-				with engine.connect() as connection:
+				<span class="code-func">with</span> engine.connect() as connection:
 					<span class="py-method">self</span>.logger.info(<span class="code-text">"Executing query ..."</span>)
 					df = pd.read_sql(db_config[<span class="code-text">'query'</span>], connection)
 				<span class="py-method">self</span>.logger.info(f<span class="code-text">"Extracted</span> {len(df)} <span class="code-text">records from PostgreSQL database."</span>)
 				<span class="py-method">return</span> df
 			<span class="py-method">except</span> Exception as <span class="py-method">e:</span> 
-				<span class="py-method">self</span>.logger.error(f <span class="code-text">"PostgreSQL extraction failed: {e}"</span> )
+				<span class="py-method">self</span>.logger.error(f<span class="code-text">"PostgreSQL extraction failed: {e}"</span> )
 				<span class="py-method">raise</span>
 										</code>
 									</pre>
 
 									<!-- utils/config_loader -->
 									<h5 class="heading_five">utils/config_loader.py</h5>
+									<p class="paragraph">.py script loads configurations from config.yaml file</p>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="py-method">import</span>  yaml
-		<span class="code-func">class</span> ConfigLoader:
+
+		<span class="code-func">class</span> <span class="brown-highlight">ConfigLoader:</span>
 			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="py-method">self</span> , config_path=<span class="code-text">'config.yaml'</span>) -> <span class="py-method"> Dict:</span>
 				<span class="py-method">self</span>.config_path = config_path
 				<span class="py-method">self</span>.config = <span class="py-method">self</span>.load_config()
@@ -194,15 +220,15 @@
 			:raises yaml.YAMLError: If there's an issue parsing the YAML file
 			"""
 		</span>
-				<span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(file_path):
-					raise FileNotFoundError(
-						f<span class="code-text">"Configuration file '{file_path}' not found."</span>)
+				<span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(config_path):
+					<span class="py-method">raise</span> FileNotFoundError(
+						f<span class="code-text">"Configuration file '{config_path}' not found."</span>)
 
 				<span class="py-method">with</span> open(<span class="py-method">self</span>.config_path, <span class="code-text">'r'</span>) as file:
 					<span class="py-method">try:</span>
 						config = yaml.safe_load(file)
 					<span class="py-method">except:</span> yaml.YAMLError as exc:
-						<span class="py-method">raise:</span> Exception(f"Error parsing YAML file: {exc}")
+						<span class="py-method">raise:</span> Exception(f<span class="code-text">"Error parsing YAML file: {exc}"</span>)
 				<span class="py-method">return</span> config
 
 			<span class="code-func">def</span> <span class="brown-highlight">get_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
@@ -212,6 +238,7 @@
 
 										<!-- utils/logging -->
 										<h5 class="heading_five">utils/logging.py</h5>
+										<p class="paragraph">.py manages logging</p>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 	<span class="py-method">import</span> logging
@@ -253,6 +280,7 @@
 
 										<!-- piepline -->
 										<h5 class="heading_five">/pipeline.py</h5>
+										<p class="paragraph">.py script ochestrates (order of execution) of the entire pipeline</p>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 		<span class="py-method">from</span> extract.postgres <span class="py-method">import</span> PostgreSQL
@@ -277,6 +305,7 @@
 
 										<!-- main -->
 										<h5 class="heading_five">/main.py</h5>
+										<p class="paragraph">entry point to run the entire elt/etl pipeline</p>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 		<span class="py-method">from</span> utils.config_loader <span class="py-method">import</span> ConfigLoader
@@ -303,26 +332,18 @@
 								</pre>
 
 									<h4 style="color: #3f3f3f; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">Apache Airflow - Set Up</h4>
-									<p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">I'll kick off the project by installing a local instance of Apache Airflow on Linux a machine via the Terminal, once Airflow Webserver and Scheduler are up and running, I'll proceed to install required dependencies for the project.</p>
-											
+									<!-- <p style="color: #545454; width: 70%; margin: 50px auto; text-align: justify; font-size: 19px;">I'll proceed to install a local instance of Apache Airflow on a Linux machine. Once Apache Airflow Webserver and Scheduler are up and running, add airflow dependencies to requirements.txt for installation.</p>
+											 -->
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># Apache Airflow - Local Set-Up</span>
 		$ python3 -m venv airflow-env <span class="code-comment"> # create virtual environment</span>
 		$ source airflow-env/bin/activate <span class="code-comment"> # activate virtual environment</span>
-		$ export AIRFLOW_HOME=~/airflow 
+		$ export AIRFLOW_HOME=~/airflow
 		$ pip install apache-airflow
 		$ airflow db init
 		$ airflow webserver -p 8080 <span class="code-comment">#launch webserver</span>
 		$ airflow sheduler <span class="code-comment">#launch scheduler</span>
-												</code>
-											</pre>
-
-											<pre class="py-code">
-												<code style="margin: 0; padding: 0;">
-			<span class="code-comment"># installing dependencies</span>
-			pip install google-cloud-bigquery
-			pip install --upgrade snowflake-connector-python
 												</code>
 											</pre>
 
@@ -331,77 +352,71 @@
 
 									
 									<!-- ORCHESTRATION IN AIRFLOW -->
-									<h5 class="heading_five">dag/ <br>Airflow Workflow</h5>
+									<h5 class="heading_five">Orchestration - Apache Airflow Workflow</h5>
+									<p class="paragraph">Airflow has its own directory structure, primarily the dags folder where DAG definitions reside. To integrate the existing pipeline, I'll adjust the project structure and move the pipeline.py to dag folder.</p>
+									<h5 class="heading_five">/dag/pipeline.py</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment"># defining a dag - Direct Acyclic Graph</span>
+
+		<span class="py-method">from</span> datetime <span class="py-method">import</span> datetime, timedelta
+		<span class="py-method">from</span> airflow <span class="py-method">import</span> DAG
+		<span class="py-method">from</span> airflow.operators.python_operator <span class="py-method">import</span> PythonOperator
+		<span class="py-method">from</span> extract.postgresql <span class="py-method">import</span> PostgreSQL
+		<span class="py-method">from</span> utils.config_loader <span class="py-method">import</span> ConfigLoader
+		<span class="py-method">from</span> utils.logging <span class="py-method">import</span> Logger
+		<span class="py-method">import</span> pandas <span class="py-method">as</span> pd
+		<span class="py-method">import</span> os
+
 		args{
 			<span class="code-text">”owner”</span> : <span class="code-text">BO859545</span> ,
 			<span class="code-text">"retries"</span>: 1,
 			<span class="code-text">"retry_delay"</span>:timedelta(minutes=5)
 			}
 
-		<span class="airflow-call">@dag</span>(
-			default_arguments = args
-			Schedule=timedelta(minutes=30),
-			start_date=datetime(2024, 7, 29),
-			catchup= <span class="code-func">False</span>,
-			tags=[<span class="code-text">'DataOps Team'</span>]
-			)
+		<span class="code-comment"># Define the DAG</span>
+
+		<span class="py-method">with</span> DAG(
+				<span class="code-text">'data_pipeline_dag'</span>,
+				default_args=default_args,
+				description=<span class="code-text">'Operations Department data pipeline'</span>,
+				schedule_interval=timedelta(days=1),
+				start_date=datetime(2024, 1, 1),
+				catchup=False,
+		) as dag:
+
+		<span class="code-func">def</span> <span class="brown-highlight">load_config</span>(**kwargs):
+			<span class="code-comment">"""Task to load configuration."""</span> 
+			config = load_config()
+			logger = get_logger(config)
+			<span class="code-comment"># Push to XCom for other tasks</span>
+			kwargs[<span class="code-text">'ti'</span>].xcom_push(key=<span class="code-text">'config'</span>, value=config)
+			kwargs[<span class="code-text">'ti'</span>].xcom_push(key=<span class="code-text">'logger'</span>, value=logger)
+			logger.info(<span class="code-text">"Configuration loaded and logger initialized."</span>)
+
+		<span class="code-func">def</span> <span class="brown-highlight">postgresql</span>(**kwargs):
+			<span class="code-comment">"""Task to extract data from the database."""</span>
+			ti = kwargs[<span class="code-text">'ti'</span>]
+			config = ti.xcom_pull(key=<span class="code-text">'config'</span> , task_ids=<span class="code-text">'load_configuration'</span>)
+			logger = get_logger(config)
+			return PostgreSQL(config, logger)
+
+		<span class="code-comment"># Define tasks</span>
+		load_config_task = PythonOperator(
+				task_id=<span class="code-text">'load_config'</span>,
+				python_callable=config_loader,
+				provide_context=True,
+		)
+
+		extract_db_task = PythonOperator(
+				task_id=<span class="code-text">'extract postgresql'</span>,
+				python_callable=postgresql,
+				provide_context=True,
+		)
 										</code>
 									</pre>
 
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="airflow-call">@task()</span>
-		<span class="code-func">def</span> get_tables <span class="code-func">()</span>:
-		<span class="code-text">"""extract list of tables in public schema"""</span>
-		
-		<span class="py-method">try</span>:
-			cursor.execute(
-				f <span class="code-text">"""SELECT table_name 
-				FROM information_schema.tables 
-				WHERE table_schema = 'public'"""</span> 
-			)
-
-		<span class="py-method">except (Exception) as</span> error:
-			print(<span class="code-text">"Error while getting tables"</span>)
-
-		<span class="py-method">finally</span>:
-			tbls = [x[0] for x in cursor.fetchall()]
-				
-										</code>
-									</pre>
-
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="airflow-call">@task()</span>
-		<span class="code-func">def</span> extract_load(tbls, conn):
-		<span class="code-text">"""this task loops through tbls returned from previous task,
-		extract all columns from each tbl where the column updated
-		at >= {ds}, last execution date then loads the data"""</span>
-
-			client = bigquery.Client()
-			job_config = bigquery.LoadJobConfig(
-			write_disposition= <span class="code-text">"WRITE_TRUNCATE"</span>)
-
-			<span class="py-method">for</span> tbl in tbls:
-			table_id = f<span class="code-text">"adventureworks-431609.stg.</span>{tbl}<span class="code-text">"</span>
-			sql = f"<span class="code-text">SELECT * FROM {tbl} WHERE 
-				updated_at >= {ds}'"</span>
-			df = pd.read_sql(sql, conn)
-
-			job = client.load_table_from_dataframe(
-			df, table_id, job_config=job_config)
-			job.result()
-
-			get_tables = get_tables()
-			extract_load = extract_load(get_tables)
-				
-										</code>
-									</pre>
-
-									<h5 class="heading_five">Orchestration <br> Apache Airflow</h5>
+									<h5 class="heading_five">Running Pipeline</h5>
 									<a href="images/VIII.png" target="_blank"><img class="image" src="images/orchestration_airflow.png" alt=""/></a>
 									<a href="images/XII.png" target="_blank"><img class="image" src="images/XII.png" alt="" /></a>
 									<a href="images/load.png" target="_blank"><img class="image" src="images/load.png" alt="" /></a>
