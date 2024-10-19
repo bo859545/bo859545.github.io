@@ -68,16 +68,16 @@
 
 									<!-- Content -->
 									<!-- Where is the data? -->
-									<h5 class="heading_five" style="margin-bottom: 2rem;">Where is the Data? <br>PostgreSQL Database</h5>
+									<h5 class="heading_five" style="margin-bottom: 2rem;">Where is the Data? <br><span style="color: #077ae6;">PostgreSQL Database</span></h5>
 									<a href="images/postgresql.png" target="_blank"><img class="image" src="images/postgresql.png"/></a>
 
 									<!-- Where do we consolidate the data? -->
-									<h5 class="heading_five" style="margin-bottom: 2rem;">Where do we consolidate the data?<br>Google BigQuery</h5>
+									<h5 class="heading_five" style="margin-bottom: 2rem;">Where do we consolidate the data?<br><span style="color: #077ae6;">Google BigQuery</span></h5>
 									<a href="images/target_bigquery.png" target="_blank"><img class="image" src="images/target_bigquery.png"/></a>
 
 									<!-- Python Classes -->
 									<h4 class="heading_five">Pipeline Design</h4>
-									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members. Ill be usin pyton classes to break te pipeline te components into manaeable tasks.</p>
+									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">I'll be using python classes to break the project components into manageable tasks. Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members. See figure below: file structure</p>
 									<!-- <a href="images/vscode.png" target="_blank"><img class="image" style="margin-bottom: 5rem; margin-top: 3rem;" src="images/vscode.png"/></a> -->
 									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 446px; width: 915px;" src="images/structure_i.png"/></a>
 
@@ -94,10 +94,11 @@
 		$ GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
 										</code>
 									</pre>
+									<a href="images/terminal_1.png" target="_blank"><img class="image" src="images/terminal_1.png"/></a>
 									
 									<!-- configuration/ -->
 									<h5 class="heading_five">config.yaml</h5>
-									<p class="paragraph">yaml configuration file for PostgreSQL & BigQuery connections, logging,  & other settings.</p>
+									<p class="paragraph">yaml configuration file for PostgreSQL, BigQuery connections, logging, & other settings.</p>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-func">postgres:</span>
@@ -122,6 +123,7 @@
 			filemode: <span class="code-text">"a"</span>
 										</code>
 									</pre>
+									<a href="images/vscode_config.yaml.png" target="_blank"><img class="image" src="images/vscode_config.yaml.png"/></a>
 
 									<!-- requirements.txt/ -->
 									<h5 class="heading_five">requirements.txt</h5>
@@ -142,26 +144,7 @@
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment">Installing requirements.txt</span> 
-		pip install -r requirements.txt
-										</code>
-									</pre>
-
-									<!-- BASE CLASS -->
-									<h5 class="heading_five">extract/base.py</h5>
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="py-method">from</span> abc <span class="py-method">import</span> ABC, abstractmethod
-		<span class="py-method">from</span> pandas <span class="py-method">as</span> pd
-
-		<span class="code-func">class</span> <span class="brown-highlight">BaseExtractor</span>(ABC) -> <span class="py-method">None:</span>
-
-			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="code-func">self</span> , config, logger):
-			<span class="code-func">self</span>.config = config
-			<span class="code-func">self</span>.logger = logger
-
-				<span class="brown-highlight">@abstractmethod</span>
-				<span class="code-func">def</span> <span class="brown-highlight">extract</span>(<span class="code-func">self</span>) -> <span class="py-method">pd.DataFrame:</span>
-					<span class="py-method">pass</span>
+		$ pip install -r requirements.txt
 										</code>
 									</pre>
 
@@ -170,13 +153,24 @@
 									<p class="paragraph">.py script handles extraction from PostgreSQL database</p>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
-	<span class="py-method">from</span> pipeline.Base <span class="py-method">import</span> BaseExtractor
 	<span class="py-method">from</span> sqlalchemy <span class="py-method">import</span> create_engine
-	<span class="py-method">import</span> pandas <span class="py-method"> as</span> pd
+	<span class="py-method">import</span> pandas<span class="py-method"> as</span> pd
 
-	<span class="code-func">class</span> <span class="brown-highlight">PostgreSQL</span> (BaseExtractor):
+	<span class="code-func">class</span> <span class="brown-highlight">PostgreSQL</span>:
 
-		<span class="code-func">def</span> <span class="brown-highlights"> <span class="brown-highlight">extract</span></span>(<span class="code-func">self</span>) -> <span class="py-method">pd.DataFrame:</span> 
+		def __init__(self, config, logging):
+			self.config = config
+			self.logging = logging
+
+		<span class="code-func">def</span> <span class="brown-highlight">extract</span></span>(<span class="code-func">self</span>) -> <span class="py-method">pd.DataFrame:</span>
+			<span class="code-text">
+			"""
+			:extracts data from a PostgreSQL database.
+			:param file_path: Path to the YAML configuration file
+			:return: pandas DataFrame
+			:raises ExceptionError: If the extraction fails
+			"""</span> 
+
 			db_config = <span class="py-method">self</span>.config[<span class="code-text">'postgres'</span>]
 			<span class="py-method">try:</span> 
 				engine_url =
@@ -185,7 +179,7 @@
 					{db_config['host']}:
 					{db_config['port']}/{db_config['database']}"
 				</span> 
-				engine = create_engine(engine_url):
+				engine = create_engine(engine_url)
 				<span class="py-method">self</span>.logger.info(<span class="code-text">"Connecting to PostgreSQL database...</span>")
 				<span class="code-func">with</span> engine.connect() as connection:
 					<span class="py-method">self</span>.logger.info(<span class="code-text">"Executing query ..."</span>)
@@ -220,7 +214,7 @@
 			:raises yaml.YAMLError: If there's an issue parsing the YAML file
 			"""
 		</span>
-				<span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(config_path):
+				<span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(self.config_path):
 					<span class="py-method">raise</span> FileNotFoundError(
 						f<span class="code-text">"Configuration file '{config_path}' not found."</span>)
 
@@ -230,9 +224,6 @@
 					<span class="py-method">except:</span> yaml.YAMLError as exc:
 						<span class="py-method">raise:</span> Exception(f<span class="code-text">"Error parsing YAML file: {exc}"</span>)
 				<span class="py-method">return</span> config
-
-			<span class="code-func">def</span> <span class="brown-highlight">get_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
-				<span class="py-method">return</span> <span class="py-method">self</span>.config
 										</code>
 									</pre>
 
