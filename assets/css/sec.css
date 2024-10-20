@@ -126,3 +126,15 @@ pre {
 .brown-highlight {
     color: #c7934e;
 }
+
+.heading_six {
+    color: #3f3f3f;
+    text-align:center;
+    font-weight: 500;
+    /* font-size: 24px; */
+    margin: 0;
+    padding: 0;
+    /* text-decoration: .05rem underline;
+    text-underline-offset: .2rem; */
+    margin-top: 40px;
+}

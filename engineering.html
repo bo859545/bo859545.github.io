@@ -77,12 +77,13 @@
 
 									<!-- Python Classes -->
 									<h4 class="heading_five">Pipeline Design</h4>
-									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">I'll be using python classes to break the project components into manageable tasks. Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns and making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members. See figure below: file structure</p>
+									<p style="color: #545454; width: 70%; margin: 20px auto; text-align: justify; font-size: 19px;">I'll use python classes to break the project into manageable tasks. Python classes can significantly improve code organization, reusability, and scalability. It also ensures separation of concerns, making it easier to scale the ETL/ELT processes, debug issues, and onboard new team members.</p>
 									<!-- <a href="images/vscode.png" target="_blank"><img class="image" style="margin-bottom: 5rem; margin-top: 3rem;" src="images/vscode.png"/></a> -->
+									<h6 class="heading_six">Project Structure</h6>
 									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 446px; width: 915px;" src="images/structure_i.png"/></a>
 
 									<!-- Create & set user permissions in PostgreSQL -->
-									<h5 class="heading_five">Create & set user permissions in PostgreSQL</h5>
+									<h5 class="heading_five">Create & grant user permissions in PostgreSQL</h5>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-comment">1. Connect to PostgreSQL</span>
@@ -97,9 +98,9 @@
 									<a href="images/terminal_1.png" target="_blank"><img class="image" src="images/terminal_1.png"/></a>
 									
 									<!-- configuration/ -->
-									<h5 class="heading_five">config.yaml</h5>
-									<p class="paragraph">yaml configuration file for PostgreSQL, BigQuery connections, logging, & other settings.</p>
-									<pre class="py-code">
+									<h5 class="heading_five">/config.yaml</h5>
+									<p class="paragraph">Setting up PostgreSQL, Google BigQuery connections, logging, & other configurations.</p>
+									<!-- <pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="code-func">postgres:</span>
 			type: <span class="code-text">"postgresql"</span>
@@ -122,12 +123,48 @@
 			file: <span class="code-text">"pipeline.log"</span>
 			filemode: <span class="code-text">"a"</span>
 										</code>
-									</pre>
+									</pre> -->
 									<a href="images/vscode_config.yaml.png" target="_blank"><img class="image" src="images/vscode_config.yaml.png"/></a>
 
+									<!-- utils/config_loader -->
+									<h5 class="heading_five">utils/config_loader.py</h5>
+									<p class="paragraph">Writing config_loader.py script to load configurations defined in the config.yaml file</p>
+									<!-- <pre class="py-code">
+										<code style="margin: 0; padding: 0;">
+		<span class="py-method">import</span>  yaml
+
+		<span class="code-func">class</span> <span class="brown-highlight">ConfigLoader:</span>
+			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="py-method">self</span> , config_path=<span class="code-text">'config.yaml'</span>) -> <span class="py-method"> Dict:</span>
+				<span class="py-method">self</span>.config_path = config_path
+				<span class="py-method">self</span>.config = <span class="py-method">self</span>.load_config()
+
+			<span class="code-func">def</span> <span class="brown-highlight">load_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
+			<span class="code-text">
+			"""
+			:loads configuration from a YAML file.
+			:param file_path: Path to the YAML configuration file
+			:return: Configuration dictionary
+			:raises FileNotFoundError: If the configuration file is not found
+			:raises yaml.YAMLError: If there's an issue parsing the YAML file
+			"""
+		</span>
+				<span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(self.config_path):
+					<span class="py-method">raise</span> FileNotFoundError(
+						f<span class="code-text">"Configuration file '{config_path}' not found."</span>)
+
+				<span class="py-method">with</span> open(<span class="py-method">self</span>.config_path, <span class="code-text">'r'</span>) as file:
+					<span class="py-method">try:</span>
+						config = yaml.safe_load(file)
+					<span class="py-method">except:</span> yaml.YAMLError as exc:
+						<span class="py-method">raise:</span> Exception(f<span class="code-text">"Error parsing YAML file: {exc}"</span>)
+				<span class="py-method">return</span> config
+										</code>
+									</pre> -->
+									<a href="images/config_loader.png" target="_blank"><img class="image" src="images/config_loader.png"/></a>
+
 									<!-- requirements.txt/ -->
-									<h5 class="heading_five">requirements.txt</h5>
-									<p class="paragraph">list of dependencies & version to be installed</p>
+									<h5 class="heading_five">/requirements.txt</h5>
+									<p class="paragraph">Listing project dependencies & version to be installed</p>
 									<pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		pandas => 2.2.3 
@@ -147,11 +184,12 @@
 		$ pip install -r requirements.txt
 										</code>
 									</pre>
+									<a href="images/requirements.png" target="_blank"><img class="image" src="images/requirements.png"/></a>
 
 									<!-- extract/postresql.py -->
-									<h5 class="heading_five">extract/postresql.py</h5>
-									<p class="paragraph">.py script handles extraction from PostgreSQL database</p>
-									<pre class="py-code">
+									<h5 class="heading_five">/extract/postresql.py</h5>
+									<p class="paragraph">Writing postgresql.py script to handle extraction from PostgreSQL database</p>
+									<!-- <pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 	<span class="py-method">from</span> sqlalchemy <span class="py-method">import</span> create_engine
 	<span class="py-method">import</span> pandas<span class="py-method"> as</span> pd
@@ -190,42 +228,9 @@
 				<span class="py-method">self</span>.logger.error(f<span class="code-text">"PostgreSQL extraction failed: {e}"</span> )
 				<span class="py-method">raise</span>
 										</code>
-									</pre>
+									</pre> -->
+									<a href="images/postextract.png" target="_blank"><img class="image" src="images/postextract.png"/></a>
 
-									<!-- utils/config_loader -->
-									<h5 class="heading_five">utils/config_loader.py</h5>
-									<p class="paragraph">.py script loads configurations from config.yaml file</p>
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="py-method">import</span>  yaml
-
-		<span class="code-func">class</span> <span class="brown-highlight">ConfigLoader:</span>
-			<span class="code-func">def</span> <span class="brown-highlight">__init__</span> (<span class="py-method">self</span> , config_path=<span class="code-text">'config.yaml'</span>) -> <span class="py-method"> Dict:</span>
-				<span class="py-method">self</span>.config_path = config_path
-				<span class="py-method">self</span>.config = <span class="py-method">self</span>.load_config()
-
-			<span class="code-func">def</span> <span class="brown-highlight">load_config</span>(<span class="py-method">self</span>) -> <span class="py-method">None:</span>
-			<span class="code-text">
-			"""
-			:loads configuration from a YAML file.
-			:param file_path: Path to the YAML configuration file
-			:return: Configuration dictionary
-			:raises FileNotFoundError: If the configuration file is not found
-			:raises yaml.YAMLError: If there's an issue parsing the YAML file
-			"""
-		</span>
-				<span class="py-method">if</span> <span class="code-func">not</span> os.path.exists(self.config_path):
-					<span class="py-method">raise</span> FileNotFoundError(
-						f<span class="code-text">"Configuration file '{config_path}' not found."</span>)
-
-				<span class="py-method">with</span> open(<span class="py-method">self</span>.config_path, <span class="code-text">'r'</span>) as file:
-					<span class="py-method">try:</span>
-						config = yaml.safe_load(file)
-					<span class="py-method">except:</span> yaml.YAMLError as exc:
-						<span class="py-method">raise:</span> Exception(f<span class="code-text">"Error parsing YAML file: {exc}"</span>)
-				<span class="py-method">return</span> config
-										</code>
-									</pre>
 
 										<!-- utils/logging -->
 										<h5 class="heading_five">utils/logging.py</h5>
