@@ -36,7 +36,7 @@
 							<li><a href="reporting.html">Reporting</a></li>
 							<li><a href="python.html">Programming</a></li>
 							<li><a href="visualization.html">Visualization</a></li>
-							<li><a href="ml.html">Machine Learning</a></li>
+							<li><a href="template.html">Machine Learning</a></li>
 							<li><a href="big-data.html">Big Data</a></li>
 						</ul>
 					</nav>
@@ -58,8 +58,8 @@
 											</ul>
 										</nav> -->
 	
-										<h2 style="color: #949494; text-align:center; padding-bottom: 0; font-weight: 500;" id="content">Building Data Pipeline</h2>
-										<h4 style="color: #545454; text-align:center; margin-bottom: 0; font-weight: 500;" id="content">A modular data pipeline for a retail company.</h4>
+										<h2 class="heading-two" id="content">Building Data Pipeline</h2>
+										<h4 class="heading-four" id="content">A modular data pipeline for a retail company.</h4>
 										
 									</header>
 
@@ -68,8 +68,23 @@
 
 									<!-- Content -->
 									<!-- Where is the data? -->
-									<h5 class="heading_five" style="margin-bottom: 2rem;">Where is the Data? <br><span style="color: #077ae6;">PostgreSQL Database</span></h5>
+									<h5 class="heading_five" style="margin-bottom: 2rem;">Where is the Data? <br><span style="color: #077ae6;">PostgreSQL</span></h5>
 									<a href="images/postgresql.png" target="_blank"><img class="image" src="images/postgresql.png"/></a>
+									<h5 class="heading_five" style="margin-bottom: 2rem;"><span style="color: #077ae6;">PostgreSQL Access</span><br>Creating elt/etl user & granting permissions</h5>
+
+									<div class="postgres-access">
+										<pre class="py-code">
+											<code style="margin: 0; padding: 0;">
+			<span class="code-comment">1. Connect to PostgreSQL</span>
+			$ sudo -u postgres psql
+			<span class="code-comment">2. Create ETL/ELT User</span>
+			$ CREATE USER etl_b085954 WITH PASSWORD 'BO@859545';
+			<span class="code-comment">3. Grant Permissions</span>
+			$ GRANT USAGE ON SCHEMA operations TO etl_b085954;
+			$ GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
+											</code>
+										</pre>
+									</div>
 
 									<!-- Where do we consolidate the data? -->
 									<h5 class="heading_five" style="margin-bottom: 2rem;">Where do we consolidate the data?<br><span style="color: #077ae6;">Google BigQuery</span></h5>
@@ -82,20 +97,9 @@
 									<h6 class="heading_six">Project Structure</h6>
 									<a href="images/structure_i.png" target="_blank"><img class="image" style="height: 446px; width: 915px;" src="images/structure_i.png"/></a>
 
-									<!-- Create & set user permissions in PostgreSQL -->
+									<!-- Create & set user permissions in PostgreSQL
 									<h5 class="heading_five">Create & grant user permissions in PostgreSQL</h5>
-									<pre class="py-code">
-										<code style="margin: 0; padding: 0;">
-		<span class="code-comment">1. Connect to PostgreSQL</span>
-		$ sudo -u postgres psql
-		<span class="code-comment">2. Create ETL/ELT User</span>
-		$ CREATE USER etl_b085954 WITH PASSWORD 'BO@859545';
-		<span class="code-comment">3. Grant Permissions</span>
-		$ GRANT USAGE ON SCHEMA operations TO etl_b085954;
-		$ GRANT SELECT ON ALL TABLES IN SCHEMA operations TO etl_b085954;
-										</code>
-									</pre>
-									<a href="images/terminal_1.png" target="_blank"><img class="image" src="images/terminal_1.png"/></a>
+									<a href="images/terminal_1.png" target="_blank"><img class="image" src="images/terminal_1.png"/></a> -->
 									
 									<!-- configuration/ -->
 									<h5 class="heading_five">/config.yaml</h5>
@@ -128,7 +132,7 @@
 
 									<!-- utils/config_loader -->
 									<h5 class="heading_five">utils/config_loader.py</h5>
-									<p class="paragraph">Writing config_loader.py script to load configurations defined in the config.yaml file</p>
+									<p class="paragraph">Config_loader.py script to load configurations defined in the config.yaml file</p>
 									<!-- <pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 		<span class="py-method">import</span>  yaml
@@ -188,7 +192,7 @@
 
 									<!-- extract/postresql.py -->
 									<h5 class="heading_five">/extract/postresql.py</h5>
-									<p class="paragraph">Writing postgresql.py script to handle extraction from PostgreSQL database</p>
+									<p class="paragraph">Postgresql.py script to handle extraction from PostgreSQL database</p>
 									<!-- <pre class="py-code">
 										<code style="margin: 0; padding: 0;">
 	<span class="py-method">from</span> sqlalchemy <span class="py-method">import</span> create_engine
@@ -276,7 +280,7 @@
 
 										<!-- piepline -->
 										<h5 class="heading_five">/pipeline.py</h5>
-										<p class="paragraph">.py script ochestrates (order of execution) of the entire pipeline</p>
+										<p class="paragraph">pipeline.py script ochestrates (order of execution) of the entire pipeline</p>
 										<pre class="py-code">
 											<code style="margin: 0; padding: 0;">
 		<span class="py-method">from</span> extract.postgres <span class="py-method">import</span> PostgreSQL

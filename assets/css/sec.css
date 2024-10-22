@@ -27,7 +27,6 @@ pre {
     margin-left: auto;
     margin-right: auto;
     width: 70%;
-    image-resolution: from-image;
 }
 
 .tertiary-nav {
@@ -87,12 +86,11 @@ pre {
 }
 
 .paragraph {
-    font-size: 20px;
-    color: #5c5c5c;
-    width: 70%;
-    margin: 0 auto;
-    margin-top: 10px;
-    text-align: center;
+    color: #545454; 
+    width: 70%; 
+    margin: 50px auto; 
+    text-align: justify; 
+    font-size: 19px;
 }
 
 .text-bold {
@@ -128,7 +126,7 @@ pre {
 }
 
 .heading_six {
-    color: #3f3f3f;
+    color: #077ae6;
     text-align:center;
     font-weight: 500;
     /* font-size: 24px; */
@@ -137,4 +135,19 @@ pre {
     /* text-decoration: .05rem underline;
     text-underline-offset: .2rem; */
     margin-top: 40px;
+}
+
+/* Tidying up */
+.heading-two {
+    color: #949494;
+    text-align:center;
+    padding-bottom: 0;
+    font-weight: 500;
+}
+
+.heading-four {
+    color: #545454;
+    text-align:center;
+    margin-bottom: 0;
+    font-weight: 500;
 }
